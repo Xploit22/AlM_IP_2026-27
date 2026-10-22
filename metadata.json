@@ -1,0 +1,6 @@
+{
+  "name": "PM SHRI KV Churu - Library Management System (Python & SQL)",
+  "description": "Official English Web Portal & Python-MySQL Library Management System for PM SHRI Kendriya Vidyalaya Churu (Jaipur Region). Features live SQL database engine, OPAC catalog, circulation desk, and runnable Python scripts created by Monika, Ashish, and Ajit.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

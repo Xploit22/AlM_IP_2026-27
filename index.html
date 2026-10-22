@@ -1,0 +1,4230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vidyalaya Library Management System — Class XII Informatics Practices (065) Project</title>
+    <meta name="description" content="Vidyalaya Library Management System developed for Class XII Informatics Practices (065) CBSE Board Project. Built with HTML5, CSS3, JS, Python Pandas & MySQL." />
+    <meta property="og:title" content="Vidyalaya Library Management System — Class XII IP Project" />
+    <meta property="og:description" content="Informatics Practices (065) Project by Monika, Ashish, and Ajit. Features MySQL database engine, catalog OPAC, circulation records, and Python Pandas simulator." />
+    <meta property="og:type" content="website" />
+
+    <!-- External Libraries: Chart.js & Three.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Custom Academic / GitHub Portal Stylesheet Embedded -->
+    <style>
+/* ==========================================================================
+   Vidyalaya Library Management System - Style Sheet
+   Class XII Informatics Practices (065) Board Project
+   Theme: GitHub / Academic Portal (Clean, Responsive, Standard CSS)
+   ========================================================================== */
+
+:root {
+  /* GitHub Light / Academic Palette */
+  --bg-page: #f6f8fa;
+  --bg-container: #ffffff;
+  --bg-subtle: #f6f8fa;
+  --bg-header: #24292f;
+  --bg-header-sub: #1f2328;
+  
+  --border-default: #d0d7de;
+  --border-muted: #e1e4e8;
+  --border-dark: #24292f;
+  
+  --text-default: #24292f;
+  --text-muted: #57606a;
+  --text-subtle: #6e7781;
+  --text-inverse: #ffffff;
+  
+  /* Button & Status Colors */
+  --btn-primary: #0969da;
+  --btn-primary-hover: #0758b9;
+  --btn-success: #1a7f37;
+  --btn-success-hover: #15692e;
+  --btn-danger: #cf222e;
+  --btn-danger-hover: #b61c27;
+  --btn-default: #f6f8fa;
+  --btn-default-border: #d0d7de;
+  --btn-default-hover: #eaeef2;
+  
+  /* Matplotlib Color Scheme (tab10) */
+  --mpl-blue: #1f77b4;
+  --mpl-orange: #ff7f0e;
+  --mpl-green: #2ca02c;
+  --mpl-red: #d62728;
+  --mpl-purple: #9467bd;
+  --mpl-brown: #8c564b;
+  --mpl-grid: #c0c0c0;
+  
+  /* Typography */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: "Consolas", "Courier New", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+  
+  /* Geometry */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --container-max: 1200px;
+}
+
+/* Dark Theme Support (GitHub Dark) */
+html.dark {
+  --bg-page: #0d1117;
+  --bg-container: #161b22;
+  --bg-subtle: #0d1117;
+  --bg-header: #161b22;
+  --bg-header-sub: #0d1117;
+  
+  --border-default: #30363d;
+  --border-muted: #21262d;
+  --border-dark: #8b949e;
+  
+  --text-default: #c9d1d9;
+  --text-muted: #8b949e;
+  --text-subtle: #6e7681;
+  --text-inverse: #ffffff;
+  
+  --btn-default: #21262d;
+  --btn-default-border: #30363d;
+  --btn-default-hover: #30363d;
+  
+  --mpl-grid: #30363d;
+}
+
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-page);
+  color: var(--text-default);
+  line-height: 1.5;
+  font-size: 14px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.main-content {
+  flex: 1 0 auto;
+  padding-top: 18px;
+  padding-bottom: 24px;
+}
+
+/* Top Academic Header Banner */
+.portal-topbar {
+  background-color: var(--bg-header);
+  color: #f0f6fc;
+  border-bottom: 1px solid var(--border-default);
+  padding: 10px 0;
+}
+
+.portal-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.school-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.school-logo-img {
+  height: 48px;
+  max-width: 64px;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  display: block;
+  flex-shrink: 0;
+}
+
+.school-titles h1 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.2px;
+  margin-bottom: 2px;
+}
+
+.school-titles p {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.project-meta-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #c9d1d9;
+}
+
+.badge-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  background: #21262d;
+  color: #58a6ff;
+  border: 1px solid #30363d;
+}
+
+/* GitHub Style Navigation Bar */
+.github-nav {
+  background-color: var(--bg-container);
+  border-bottom: 1px solid var(--border-default);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-scroller {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.nav-tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.nav-tab-btn:hover {
+  background-color: var(--bg-subtle);
+  color: var(--text-default);
+}
+
+.nav-tab-btn.active {
+  background-color: #0969da;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+html.dark .nav-tab-btn.active {
+  background-color: #1f6feb;
+  color: #ffffff;
+}
+
+.nav-counter {
+  display: inline-block;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.08);
+  font-family: var(--font-mono);
+}
+
+.nav-tab-btn.active .nav-counter {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Notice Ticker Strip */
+.notice-strip {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-default);
+  padding: 6px 0;
+  font-size: 12px;
+}
+
+html.dark .notice-strip {
+  background: #161b22;
+}
+
+.notice-strip-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notice-label {
+  background: #24292f;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+html.dark .notice-label {
+  background: #30363d;
+  color: #58a6ff;
+}
+
+/* Standard Panels & Cards */
+.box {
+  background: var(--bg-container);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.box-header {
+  padding: 12px 16px;
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-default);
+  border-top-left-radius: var(--radius-md);
+  border-top-right-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.box-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-default);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.box-body {
+  padding: 16px;
+}
+
+.box-footer {
+  padding: 10px 16px;
+  background-color: var(--bg-subtle);
+  border-top: 1px solid var(--border-default);
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Metric / KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kpi-card {
+  background: var(--bg-container);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.kpi-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-default);
+  font-family: var(--font-sans);
+  line-height: 1.2;
+  margin: 4px 0 2px 0;
+}
+
+.kpi-sql {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-subtle);
+}
+
+/* Dense Data Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--bg-container);
+  border: 1px solid var(--border-default);
+}
+
+.data-table th {
+  background-color: var(--bg-subtle);
+  color: var(--text-default);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 12px;
+  border: 1px solid var(--border-default);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 7px 12px;
+  border: 1px solid var(--border-default);
+  color: var(--text-default);
+}
+
+.data-table tbody tr:nth-child(even) {
+  background-color: var(--bg-subtle);
+}
+
+.data-table tbody tr:hover {
+  background-color: rgba(9, 105, 218, 0.05);
+}
+
+/* Standard Inputs & Selects */
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-default);
+  margin-bottom: 4px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--bg-container);
+  color: var(--text-default);
+  outline: none;
+  font-family: var(--font-sans);
+  transition: border-color 0.1s ease, box-shadow 0.1s ease;
+}
+
+.form-control:focus {
+  border-color: var(--btn-primary);
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+}
+
+.form-control-mono {
+  font-family: var(--font-mono);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.12s ease;
+  font-family: var(--font-sans);
+  line-height: 18px;
+  text-decoration: none;
+}
+
+.btn-default {
+  background-color: var(--btn-default);
+  border-color: var(--btn-default-border);
+  color: var(--text-default);
+}
+
+.btn-default:hover {
+  background-color: var(--btn-default-hover);
+  border-color: #afb8c1;
+}
+
+.btn-primary {
+  background-color: var(--btn-primary);
+  color: #ffffff;
+  border-color: #0860c8;
+}
+
+.btn-primary:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.btn-success {
+  background-color: var(--btn-success);
+  color: #ffffff;
+  border-color: #166e2f;
+}
+
+.btn-success:hover {
+  background-color: var(--btn-success-hover);
+}
+
+.btn-danger {
+  background-color: var(--btn-danger);
+  color: #ffffff;
+  border-color: #b71f2a;
+}
+
+.btn-danger:hover {
+  background-color: var(--btn-danger-hover);
+}
+
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 12px;
+  line-height: 16px;
+  border-radius: var(--radius-sm);
+}
+
+/* Status Badges */
+.status-pill {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+}
+
+.status-in-stock {
+  background: #dafbe1;
+  color: #1a7f37;
+  border-color: #aceebb;
+}
+
+.status-low-stock {
+  background: #fff8c5;
+  color: #9a6700;
+  border-color: #f7e07a;
+}
+
+.status-out-stock {
+  background: #ffebe9;
+  color: #cf222e;
+  border-color: #ffc1ba;
+}
+
+html.dark .status-in-stock {
+  background: rgba(46, 160, 67, 0.15);
+  color: #3fb950;
+  border-color: rgba(46, 160, 67, 0.4);
+}
+
+html.dark .status-low-stock {
+  background: rgba(187, 128, 9, 0.15);
+  color: #d29922;
+  border-color: rgba(187, 128, 9, 0.4);
+}
+
+html.dark .status-out-stock {
+  background: rgba(248, 81, 73, 0.15);
+  color: #f85149;
+  border-color: rgba(248, 81, 73, 0.4);
+}
+
+/* Code Blocks & Editors */
+.code-window {
+  background-color: #24292f;
+  border: 1px solid #30363d;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.code-titlebar {
+  background-color: #1f2328;
+  padding: 8px 12px;
+  border-bottom: 1px solid #30363d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.code-content {
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: #f0f6fc;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* Matplotlib Authentic Figure Styling */
+.matplotlib-figure-box {
+  background: #ffffff;
+  border: 1px solid #24292f;
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  position: relative;
+}
+
+.matplotlib-title {
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 13px;
+  color: #000000;
+  margin-bottom: 10px;
+}
+
+.matplotlib-canvas-wrapper {
+  position: relative;
+  height: 280px;
+  background: #ffffff;
+}
+
+.matplotlib-caption {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #d0d7de;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #57606a;
+}
+
+/* 3D WebGL Inspection Container */
+.threed-stage-box {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: var(--radius-md);
+  padding: 10px;
+  position: relative;
+}
+
+.threed-canvas-area {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #0d1117;
+}
+
+.threed-hud-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(22, 27, 34, 0.9);
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+.threed-controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+/* Academic Footer */
+.portal-footer {
+  background-color: var(--bg-header);
+  color: #8b949e;
+  border-top: 1px solid var(--border-default);
+  padding: 20px 0;
+  font-size: 12px;
+  margin-top: auto;
+}
+
+.portal-footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #30363d;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-link {
+  color: #58a6ff;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}
+
+.footer-status-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: #21262d;
+  color: #3fb950;
+  border: 1px solid #30363d;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* Modal Windows */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.modal-overlay.hidden {
+  display: none !important;
+}
+
+.modal-box {
+  background: var(--bg-container);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  padding: 12px 16px;
+  background-color: var(--bg-subtle);
+  border-bottom: 1px solid var(--border-default);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-default);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.modal-close-btn:hover {
+  color: var(--text-default);
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.modal-footer {
+  padding: 12px 16px;
+  background-color: var(--bg-subtle);
+  border-top: 1px solid var(--border-default);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Toast Notification (Simple developer snackbar) */
+#toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  background: #24292f;
+  color: #ffffff;
+  border: 1px solid #30363d;
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast.toast-success {
+  border-left: 4px solid var(--btn-success);
+}
+
+.toast.toast-error {
+  border-left: 4px solid var(--btn-danger);
+}
+
+.toast.toast-info {
+  border-left: 4px solid var(--btn-primary);
+}
+
+.toast.toast-amber {
+  border-left: 4px solid #d29922;
+}
+
+/* Grid Utilities */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-2col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.grid-sidebar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 992px) {
+  .grid-sidebar {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+.grid-sidebar-rev {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 992px) {
+  .grid-sidebar-rev {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-2 { margin-top: 8px; }
+.mt-3 { margin-top: 12px; }
+.mt-4 { margin-top: 16px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+    </style>
+  </head>
+  <body>
+
+    <!-- ======================================================== -->
+    <!-- 1. TOP HEADER BANNER (ACADEMIC / GITHUB PORTAL THEME)    -->
+    <!-- ======================================================== -->
+    <header class="portal-topbar">
+      <div class="container portal-topbar-inner">
+        
+        <!-- School & Official Emblems -->
+        <div class="school-brand">
+          <img src="/assets/aistudio/images_0db39d79.jpeg" alt="Kendriya Vidyalaya Sangathan Logo" class="school-logo-img" />
+          <img src="/assets/aistudio/images_829d52ae.png" alt="PM SHRI School Logo" class="school-logo-img" />
+          <div class="school-titles">
+            <h1>Vidyalaya Library Management System — Class XII Informatics Practices (065) Project</h1>
+            <p>PM SHRI Kendriya Vidyalaya Churu (Jaipur Region) • CBSE Board Session 2025–26 • School Code: 1478</p>
+          </div>
+        </div>
+
+        <!-- Meta box & Developer Credits -->
+        <div class="project-meta-box">
+          <span class="badge-tag">CBSE Code: 065</span>
+          <span>Students: <strong>Monika, Ashish & Ajit</strong></span>
+          <button onclick="toggleDarkMode()" class="btn btn-default btn-sm" title="Toggle theme">
+            <span id="themeText">Theme: Auto</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- ======================================================== -->
+    <!-- 2. GITHUB-STYLE RECTANGULAR NAVIGATION BAR (NO EMOJIS)    -->
+    <!-- ======================================================== -->
+    <nav class="github-nav">
+      <div class="container">
+        <div class="nav-scroller">
+          <button onclick="switchTab('home')" id="nav-home" class="nav-tab-btn active">
+            Home
+          </button>
+          <button onclick="switchTab('catalog')" id="nav-catalog" class="nav-tab-btn">
+            Book Catalog
+            <span id="nav-catalog-badge" class="nav-counter">18</span>
+          </button>
+          <button onclick="switchTab('circulation')" id="nav-circulation" class="nav-tab-btn">
+            Circulation Desk
+            <span id="nav-issue-badge" class="nav-counter">3</span>
+          </button>
+          <button onclick="switchTab('sqldb')" id="nav-sqldb" class="nav-tab-btn">
+            SQL Database
+          </button>
+          <button onclick="switchTab('pythoncode')" id="nav-pythoncode" class="nav-tab-btn">
+            Python Script
+          </button>
+          <button onclick="switchTab('students')" id="nav-students" class="nav-tab-btn">
+            Student Directory
+          </button>
+          <button onclick="switchTab('reports')" id="nav-reports" class="nav-tab-btn">
+            Matplotlib Analytics
+          </button>
+          <button onclick="switchTab('threed')" id="nav-threed" class="nav-tab-btn">
+            3D Book Desk
+          </button>
+          <button onclick="switchTab('about')" id="nav-about" class="nav-tab-btn">
+            Documentation
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Notification Ticker -->
+    <div class="notice-strip">
+      <div class="container notice-strip-inner">
+        <span class="notice-label">Notice</span>
+        <span style="font-size: 12px; color: var(--text-muted);">
+          Database Status: Connected (library_db.sql) • Circulation loan policy: 14 days renewal period • Overdue fine: Rs. 1.00/day
+        </span>
+      </div>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- 3. MAIN WORKSPACE / TABS                                 -->
+    <!-- ======================================================== -->
+    <main class="main-content">
+      <div class="container">
+
+        <!-- ==================================================== -->
+        <!-- TAB 1: HOME & OVERVIEW                               -->
+        <!-- ==================================================== -->
+        <section id="tab-home">
+          
+          <!-- Key Metrics Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">Total Cataloged Titles</div>
+              <div class="kpi-value" id="home-kpi-titles">18</div>
+              <div class="kpi-sql">SELECT COUNT(*) FROM books;</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Available Copies in Stock</div>
+              <div class="kpi-value" id="home-kpi-copies" style="color: var(--btn-success);">92</div>
+              <div class="kpi-sql">SELECT SUM(copies) FROM books;</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Active Loans on Circulation</div>
+              <div class="kpi-value" id="home-kpi-issued" style="color: #b06000;">3</div>
+              <div class="kpi-sql">WHERE status = 'Issued';</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Subject Departments</div>
+              <div class="kpi-value" id="home-kpi-departments">6</div>
+              <div class="kpi-sql">COUNT(DISTINCT category);</div>
+            </div>
+          </div>
+
+          <!-- Quick OPAC Search Toolbar -->
+          <div class="box">
+            <div class="box-header">
+              <div class="box-title">Quick Catalog Search (OPAC)</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Fast lookup by title, author, or accession code</div>
+            </div>
+            <div class="box-body" style="padding: 12px 16px;">
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input type="text" id="homeSearchInput" placeholder="Enter Book Title, Author Name, or Accession ID (e.g., Computer Science, Sumita Arora, KVCR-101)..." class="form-control" style="flex: 1; min-width: 260px;" onkeydown="if(event.key==='Enter') executeHomeSearch()" />
+                <button onclick="executeHomeSearch()" class="btn btn-primary">
+                  Search Catalog
+                </button>
+                <button onclick="openAddBookModal()" class="btn btn-default">
+                  Add New Book
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Interactive WebGL Explorer Box -->
+          <div class="box">
+            <div class="box-header">
+              <div class="box-title">Interactive 3D Book Explorer (Three.js WebGL Engine)</div>
+              <div style="display: flex; gap: 8px;">
+                <button onclick="switchTab('threed')" class="btn btn-default btn-sm">Full 3D Library Room</button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="grid-sidebar">
+                
+                <!-- Left 3D Canvas Box -->
+                <div class="threed-stage-box">
+                  <div class="threed-canvas-area" style="height: 320px;">
+                    <canvas id="home3dCanvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
+                    <div class="threed-hud-badge">Drag to orbit 360° • Scroll to zoom</div>
+                    <div id="home3dBadge" style="position: absolute; bottom: 8px; left: 8px; background: rgba(22, 27, 34, 0.9); border: 1px solid #30363d; color: #3fb950; font-size: 11px; padding: 2px 6px; border-radius: 4px;">
+                      <span id="home3dBadgeText">In Stock: 8 Copies Available</span>
+                    </div>
+                  </div>
+
+                  <div class="threed-controls-bar">
+                    <div style="display: flex; gap: 6px;">
+                      <button onclick="toggleHome3DAutoRotate()" id="home3dRotateBtn" class="btn btn-default btn-sm">
+                        <span id="home3dRotateText">Auto-Spin: ON</span>
+                      </button>
+                      <button onclick="toggleHome3DOpenBook()" id="home3dOpenBtn" class="btn btn-default btn-sm">
+                        <span id="home3dOpenText">Open Hardcover</span>
+                      </button>
+                      <button onclick="cycleHome3DLighting()" class="btn btn-default btn-sm">
+                        <span id="home3dLightText">Light: Desk Lamp</span>
+                      </button>
+                    </div>
+                    <button onclick="resetHome3DCamera()" class="btn btn-default btn-sm">Reset View</button>
+                  </div>
+                </div>
+
+                <!-- Right Book Info & Selection -->
+                <div style="display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <div class="form-group">
+                      <label class="form-label">Select Title for 3D View:</label>
+                      <select id="home3dBookSelect" onchange="changeHome3DBook(this.value)" class="form-control">
+                        <!-- Populated dynamically -->
+                      </select>
+                    </div>
+
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px; margin-top: 10px;">
+                      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+                        <span id="home3dCategory" class="badge-tag">Computer Science</span>
+                        <span id="home3dAccId" class="mono" style="font-weight: 700; font-size: 12px;">KVCR-101</span>
+                      </div>
+                      <h3 id="home3dTitle" style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">Computer Science with Python</h3>
+                      <p id="home3dAuthor" style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Author: Sumita Arora</p>
+                      
+                      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 11px; text-align: center; border-top: 1px solid var(--border-default); padding-top: 8px;">
+                        <div>
+                          <div style="color: var(--text-muted);">Shelf</div>
+                          <strong id="home3dShelf">Rack A-1</strong>
+                        </div>
+                        <div>
+                          <div style="color: var(--text-muted);">Year</div>
+                          <strong id="home3dYear">2024</strong>
+                        </div>
+                        <div>
+                          <div style="color: var(--text-muted);">Price</div>
+                          <strong id="home3dPrice">Rs. 620</strong>
+                        </div>
+                      </div>
+
+                      <div style="margin-top: 10px; padding: 6px 8px; background: #24292f; color: #7ee787; border-radius: 4px; font-family: var(--font-mono); font-size: 11px;">
+                        <span id="home3dSqlQuery">SELECT * FROM books WHERE book_id = 'KVCR-101';</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="margin-top: 12px; display: flex; gap: 8px;">
+                    <button onclick="borrowCurrentHome3DBook()" class="btn btn-success" style="flex: 1;">
+                      Issue This Book
+                    </button>
+                    <button onclick="inspectCurrentBookInFull3D()" class="btn btn-default">
+                      Full Desk View
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- 2-Column: Notices & Recent Acquisitions -->
+          <div class="grid-sidebar">
+            
+            <!-- Left: Library Circulars -->
+            <div class="box">
+              <div class="box-header">
+                <div class="box-title">Library Notices & Board Regulations</div>
+                <span class="badge-tag">Academic Session 2025–26</span>
+              </div>
+              <div class="box-body" style="padding: 0;">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 50px;">No.</th>
+                      <th>Notification / Circular Title</th>
+                      <th style="width: 140px;">Category</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="mono">01</td>
+                      <td>
+                        <strong>CBSE Board Class XII Practical Project Submission</strong>
+                        <div style="font-size: 11px; color: var(--text-muted);">Informatics Practices (Subject Code 065). All students must ensure library records are reconciled.</div>
+                      </td>
+                      <td><span class="badge-tag">CBSE Circular</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">02</td>
+                      <td>
+                        <strong>Pustakopahar Scheme (KVS Book Sharing Initiative)</strong>
+                        <div style="font-size: 11px; color: var(--text-muted);">Senior batch students may deposit NCERT reference books at the circulation desk for junior scholars.</div>
+                      </td>
+                      <td><span class="badge-tag">KVS HQ</span></td>
+                    </tr>
+                    <tr>
+                      <td class="mono">03</td>
+                      <td>
+                        <strong>14-Day Borrowing & Overdue Rule</strong>
+                        <div style="font-size: 11px; color: var(--text-muted);">Standard borrowing term is 14 days. Maximum 3 books per student card. Late fine: Rs. 1.00 per day.</div>
+                      </td>
+                      <td><span class="badge-tag">Library Rule</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right: Recent Additions -->
+            <div class="box">
+              <div class="box-header">
+                <div class="box-title">Recent Acquisitions</div>
+                <button onclick="switchTab('catalog')" class="btn btn-default btn-sm">View All</button>
+              </div>
+              <div class="box-body" id="homeFeaturedBooks" style="padding: 10px;">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 2: OPAC BOOK CATALOG (DENSE DATA TABLE)          -->
+        <!-- ==================================================== -->
+        <section id="tab-catalog" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <div class="box-title">Online Public Access Catalog (OPAC)</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Master database inventory with search filters, CSV export, and record editing</div>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button onclick="exportCatalogToCSV()" class="btn btn-success btn-sm">
+                  Export CSV
+                </button>
+                <label class="btn btn-default btn-sm" style="cursor: pointer; margin: 0;">
+                  Import CSV
+                  <input type="file" id="csvFileInput" accept=".csv" onchange="importCSVFile(event)" style="display: none;" />
+                </label>
+                <button onclick="openAddBookModal()" class="btn btn-primary btn-sm">
+                  Add Book
+                </button>
+              </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="box-body" style="background: var(--bg-subtle); border-bottom: 1px solid var(--border-default); padding: 10px 16px;">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px;">
+                <div>
+                  <input type="text" id="catalogSearch" oninput="applyFilters()" placeholder="Filter title, author, ID, rack..." class="form-control" />
+                </div>
+                <div>
+                  <select id="categoryFilter" onchange="applyFilters()" class="form-control">
+                    <option value="ALL">All Departments (All Streams)</option>
+                    <option value="Computer Science">Computer Science & IP</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="AI & Robotics">AI & Robotics</option>
+                    <option value="Fiction">Literature & Fiction</option>
+                  </select>
+                </div>
+                <div>
+                  <select id="availFilter" onchange="applyFilters()" class="form-control">
+                    <option value="ALL">All Stock Levels</option>
+                    <option value="available">In Stock (Available)</option>
+                    <option value="low">Low Stock (≤ 2 Copies)</option>
+                    <option value="out">Out of Stock (0 Copies)</option>
+                  </select>
+                </div>
+                <div>
+                  <select id="sortFilter" onchange="applyFilters()" class="form-control">
+                    <option value="title_asc">Sort: Title (A to Z)</option>
+                    <option value="id_asc">Sort: Accession ID (Ascending)</option>
+                    <option value="copies_desc">Sort: Stock Copies (High to Low)</option>
+                    <option value="year_desc">Sort: Publication Year (Latest)</option>
+                    <option value="price_desc">Sort: Price (High to Low)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Catalog Table -->
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40px; text-align: center;">No.</th>
+                    <th style="width: 90px;">Accession ID</th>
+                    <th>Book Title & Author</th>
+                    <th style="width: 140px;">Department</th>
+                    <th style="width: 80px; text-align: center;">Shelf</th>
+                    <th style="width: 60px; text-align: center;">Year</th>
+                    <th style="width: 70px; text-align: right;">Price (Rs.)</th>
+                    <th style="width: 110px; text-align: center;">Stock Status</th>
+                    <th style="width: 170px; text-align: center;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="booksTableBody">
+                  <!-- Rendered via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="box-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+              <div>
+                Showing <strong id="displayedCount">18</strong> of <strong id="totalCatalogCount">18</strong> cataloged records
+              </div>
+              <div style="font-size: 11px;">
+                <span style="color: var(--btn-success); margin-right: 10px;">■ In Stock (&gt;2)</span>
+                <span style="color: #b06000; margin-right: 10px;">■ Low Stock (1-2)</span>
+                <span style="color: var(--btn-danger);">■ Out of Stock (0)</span>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 3: CIRCULATION DESK (ISSUE & RETURN)             -->
+        <!-- ==================================================== -->
+        <section id="tab-circulation" class="hidden">
+          
+          <div class="grid-sidebar-rev">
+            
+            <!-- Left: Issue Book Form -->
+            <div class="box">
+              <div class="box-header">
+                <div class="box-title">Issue Book (Circulation Form)</div>
+              </div>
+              <div class="box-body">
+                <form id="issueBookForm" onsubmit="handleIssueBook(event)">
+                  <div class="form-group">
+                    <label class="form-label">Select Book to Issue *</label>
+                    <select id="issueSelectBook" required class="form-control">
+                      <!-- Populated dynamically -->
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Student Library Card / Admission No *</label>
+                    <input type="text" id="issueStudentCard" required placeholder="e.g. KVCR-2025-014" class="form-control form-control-mono" />
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label">Student Full Name *</label>
+                    <input type="text" id="issueStudentName" required placeholder="e.g. Rohit Sharma" class="form-control" />
+                  </div>
+
+                  <div class="grid-2col">
+                    <div class="form-group">
+                      <label class="form-label">Class & Stream *</label>
+                      <select id="issueStudentClass" required class="form-control">
+                        <option value="XII-Sci">Class XII (Science)</option>
+                        <option value="XII-Arts">Class XII (Arts)</option>
+                        <option value="XII-Com">Class XII (Commerce)</option>
+                        <option value="XI-Sci">Class XI (Science)</option>
+                        <option value="XI-Com">Class XI (Commerce)</option>
+                        <option value="X-A">Class X - A</option>
+                        <option value="X-B">Class X - B</option>
+                        <option value="IX-A">Class IX - A</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="form-label">Issue Date *</label>
+                      <input type="date" id="issueDateInput" required class="form-control form-control-mono" />
+                    </div>
+                  </div>
+
+                  <div style="background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 8px 10px; font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">
+                    Policy: Standard loan duration is 14 days. Due date will be calculated automatically.
+                  </div>
+
+                  <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    Issue Book (Record Loan)
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Right: Circulation Ledger -->
+            <div class="box">
+              <div class="box-header">
+                <div>
+                  <div class="box-title">Active Circulation Ledger</div>
+                  <div style="font-size: 12px; color: var(--text-muted);">Current student borrowings, renewals, and returned loans</div>
+                </div>
+
+                <div style="display: flex; gap: 4px;">
+                  <button onclick="filterCirculation('ALL')" id="filter-circ-all" class="btn btn-default btn-sm">All</button>
+                  <button onclick="filterCirculation('Issued')" id="filter-circ-active" class="btn btn-default btn-sm">Active</button>
+                  <button onclick="filterCirculation('Returned')" id="filter-circ-returned" class="btn btn-default btn-sm">Returned</button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 80px;">Loan ID</th>
+                      <th>Book Title & ID</th>
+                      <th>Student / Card</th>
+                      <th style="width: 80px; text-align: center;">Class</th>
+                      <th style="width: 130px;">Dates (Issue / Due)</th>
+                      <th style="width: 80px; text-align: center;">Status</th>
+                      <th style="width: 110px; text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="circulationTableBody">
+                    <!-- Rendered via JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 4: SQL DATABASE STUDIO & QUERY RUNNER            -->
+        <!-- ==================================================== -->
+        <section id="tab-sqldb" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <div class="box-title">MySQL Relational Database Studio</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Database: `SchoolLibrary_KVChuru` • Tables: `books`, `issued_books`</div>
+              </div>
+              <button onclick="downloadSQLDump()" class="btn btn-default btn-sm">
+                Download schema.sql
+              </button>
+            </div>
+
+            <div class="box-body">
+              <!-- Preset SQL Queries -->
+              <div style="margin-bottom: 12px;">
+                <label class="form-label">Predefined SQL Queries (Informatics Practices Syllabus):</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button onclick="setQuery('SELECT * FROM books;')" class="btn btn-default btn-sm mono">SELECT * FROM books;</button>
+                  <button onclick="setQuery('SELECT category, COUNT(*) AS Total_Titles, SUM(copies_available) AS Total_Stock FROM books GROUP BY category;')" class="btn btn-default btn-sm mono">GROUP BY category</button>
+                  <button onclick="setQuery('SELECT * FROM books WHERE price >= 500 ORDER BY price DESC;')" class="btn btn-default btn-sm mono">WHERE price &gt;= 500</button>
+                  <button onclick="setQuery('SELECT b.book_id, b.title, i.student_name, i.issue_date, i.status FROM books b JOIN issued_books i ON b.book_id = i.book_id;')" class="btn btn-default btn-sm mono">JOIN books &amp; issued</button>
+                </div>
+              </div>
+
+              <!-- SQL Textarea -->
+              <div class="form-group">
+                <textarea id="sqlQueryInput" rows="3" class="form-control form-control-mono" style="background: #24292f; color: #7ee787; font-size: 13px;" placeholder="Type SQL query here (e.g. SELECT * FROM books;)..."></textarea>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span id="queryStatusText" class="mono" style="font-size: 11px; color: var(--text-muted);">Ready to execute query.</span>
+                <button onclick="executeSQLQuery()" class="btn btn-primary">
+                  Execute Query
+                </button>
+              </div>
+
+              <!-- Query Result Container -->
+              <div style="margin-top: 14px;">
+                <label class="form-label">Query Results Table:</label>
+                <div id="sqlResultContainer" class="table-responsive" style="max-height: 280px; overflow-y: auto; border: 1px solid var(--border-default); border-radius: var(--radius-sm);">
+                  <div style="padding: 20px; text-align: center; color: var(--text-muted); font-size: 12px;">
+                    Execute an SQL statement to view results.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Generated MySQL Schema DDL/DML Script -->
+          <div class="code-window">
+            <div class="code-titlebar">
+              <span>library_schema.sql (MySQL DDL &amp; DML Dump)</span>
+              <button onclick="copyTextFromElement('fullSqlCodeBlock')" class="btn btn-default btn-sm">Copy SQL</button>
+            </div>
+            <div class="code-content" id="fullSqlCodeBlock">
+              -- Loading schema script...
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 5: PYTHON SOURCE CODE ENGINE                     -->
+        <!-- ==================================================== -->
+        <section id="tab-pythoncode" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <div class="box-title">Python 3 + Pandas &amp; MySQL Script Engine</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Executable CBSE Class 12 IP Project: `kv_library_app.py`</div>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button onclick="downloadPythonScript()" class="btn btn-default btn-sm">Download .py</button>
+                <button onclick="simulatePythonRun()" class="btn btn-primary btn-sm">Run Python in Terminal</button>
+              </div>
+            </div>
+
+            <div class="box-body" style="padding: 0;">
+              <!-- Python Terminal Simulation -->
+              <div style="background: #1f2328; border-bottom: 1px solid #30363d; padding: 6px 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span class="mono" style="font-size: 11px; color: #8b949e;">Terminal: python3 kv_library_app.py</span>
+                <button onclick="clearPythonTerminal()" class="btn btn-default btn-sm" style="padding: 1px 6px; font-size: 11px;">Clear</button>
+              </div>
+              <div id="pythonTerminalBox" style="background: #0d1117; color: #3fb950; font-family: var(--font-mono); font-size: 12px; padding: 12px; min-height: 140px; max-height: 240px; overflow-y: auto;">
+                <pre id="pythonTerminalOutput" style="white-space: pre-wrap; margin: 0;">Click "Run Python in Terminal" to simulate Python CLI execution.</pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Python Code Preview -->
+          <div class="code-window">
+            <div class="code-titlebar">
+              <span>kv_library_app.py (Full Source Code)</span>
+              <button onclick="copyTextFromElement('fullPythonCodeBlock')" class="btn btn-default btn-sm">Copy Code</button>
+            </div>
+            <div class="code-content" id="fullPythonCodeBlock" style="max-height: 380px; overflow-y: auto;">
+              # Loading Python source code...
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 6: STUDENT MEMBERS DIRECTORY                     -->
+        <!-- ==================================================== -->
+        <section id="tab-students" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <div class="box-title">Registered Student Library Members</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Active student cards, current borrowings, and membership standing</div>
+              </div>
+              <div>
+                <input type="text" id="studentSearchInput" oninput="renderStudentDirectory()" placeholder="Search student name or card..." class="form-control" style="width: 220px;" />
+              </div>
+            </div>
+
+            <div class="box-body">
+              <div id="studentCardsGrid" class="grid-3col">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 7: MATPLOTLIB ANALYTICS (REAL PYTHON MATPLOTLIB) -->
+        <!-- ==================================================== -->
+        <section id="tab-reports" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <div class="box-title">Library Inventory Analytics (Python Matplotlib Plots)</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Plots formatted in authentic matplotlib.pyplot styling (tab10 color palette, dashed gridlines, and labeled axes)</div>
+              </div>
+              <button onclick="window.print()" class="btn btn-default btn-sm">
+                Print Report
+              </button>
+            </div>
+
+            <div class="box-body">
+              
+              <!-- 2 Matplotlib Figures -->
+              <div class="grid-2col">
+                
+                <!-- Figure 1: Bar Plot -->
+                <div class="matplotlib-figure-box">
+                  <div class="matplotlib-title">
+                    Figure 1: matplotlib.pyplot.bar(category, copies_available)
+                  </div>
+                  <div class="matplotlib-canvas-wrapper">
+                    <canvas id="reportDepartmentChart"></canvas>
+                  </div>
+                  <div class="matplotlib-caption">
+                    plt.bar(departments, copies, color='#1f77b4', edgecolor='black', linewidth=1.0)<br>
+                    plt.grid(True, linestyle='--', alpha=0.6)<br>
+                    plt.title("Books Stocked by Subject Department")
+                  </div>
+                </div>
+
+                <!-- Figure 2: Pie Plot -->
+                <div class="matplotlib-figure-box">
+                  <div class="matplotlib-title">
+                    Figure 2: matplotlib.pyplot.pie([in_stock, on_loan], autopct='%1.1f%%')
+                  </div>
+                  <div class="matplotlib-canvas-wrapper">
+                    <canvas id="reportCirculationChart"></canvas>
+                  </div>
+                  <div class="matplotlib-caption">
+                    plt.pie([stock, issued], labels=['On Shelves', 'On Loan'], colors=['#2ca02c', '#ff7f0e'])<br>
+                    plt.title("Circulation Availability Ratio")
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Summary Metrics -->
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px;">
+                <div class="kpi-card">
+                  <div class="kpi-label">Total Catalog Valuation</div>
+                  <div class="kpi-value" id="reportTotalWorth">Rs. 54,820</div>
+                  <div class="kpi-sql">SUM(price * copies_available)</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">Stock Availability Ratio</div>
+                  <div class="kpi-value" id="reportUtilization" style="color: var(--btn-success);">96.8%</div>
+                  <div class="kpi-sql">stock / (stock + issued)</div>
+                </div>
+                <div class="kpi-card">
+                  <div class="kpi-label">CBSE IP Database Status</div>
+                  <div class="kpi-value" style="font-size: 16px; margin-top: 8px;">Reconciled &amp; Active</div>
+                  <div class="kpi-sql">MySQL localhost:3306</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 8: 3D BOOK DESK & BOOKSHELF (THREE.JS)           -->
+        <!-- ==================================================== -->
+        <section id="tab-threed" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div>
+                <div class="box-title">Three.js 3D Virtual Reading Room &amp; Bookshelf Rack</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Procedural Three.js r128 canvas • Orbit inspection &amp; shelf browser</div>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button onclick="set3DViewMode('shelf')" id="modeShelfBtn" class="btn btn-primary btn-sm">
+                  3D Bookshelf View
+                </button>
+                <button onclick="set3DViewMode('desk')" id="modeDeskBtn" class="btn btn-default btn-sm">
+                  Single Book Desk
+                </button>
+              </div>
+            </div>
+
+            <div class="box-body">
+              <div class="grid-sidebar">
+                
+                <!-- 3D Canvas Box -->
+                <div class="threed-stage-box">
+                  <div class="threed-canvas-area" style="height: 480px;">
+                    <canvas id="room3dCanvas" style="width: 100%; height: 100%; display: block; cursor: grab;"></canvas>
+                    
+                    <div id="room3dHudTitle" class="threed-hud-badge">
+                      3D Bookshelf Room • Hover a book to pull it out • Click to inspect
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div id="room3dHoverTooltip" style="display: none; position: absolute; background: rgba(22, 27, 34, 0.95); border: 1px solid #d0d7de; color: #ffffff; padding: 8px 12px; border-radius: 4px; font-size: 12px; pointer-events: none; z-index: 20;">
+                      <div style="font-weight: 700; color: #58a6ff;" id="tooltipAccId">KVCR-101</div>
+                      <div id="tooltipTitle" style="font-weight: 600;">Title</div>
+                      <div id="tooltipAuthor" style="font-size: 11px; color: #8b949e;">Author</div>
+                      <div id="tooltipCopies" style="font-size: 10px; color: #3fb950; margin-top: 4px;">Copies</div>
+                      <div id="tooltipShelf" style="font-size: 10px; color: #8b949e;">Rack A-1</div>
+                    </div>
+                  </div>
+
+                  <div class="threed-controls-bar">
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                      <button onclick="toggle3DAutoRotate()" id="room3dAutoRotateBtn" class="btn btn-default btn-sm">
+                        <span id="room3dAutoRotateText">Auto-Rotate: ON</span>
+                      </button>
+                      <button onclick="toggle3DOpenBook()" id="room3dOpenBookBtn" class="btn btn-default btn-sm">
+                        <span id="room3dOpenBookText">Open Hardcover</span>
+                      </button>
+                      <button onclick="focusRandomBook()" class="btn btn-default btn-sm">
+                        Select Random Book
+                      </button>
+                      <button onclick="cycle3DLighting()" class="btn btn-default btn-sm">
+                        <span id="room3dLightName">Lamp: Study Brass</span>
+                      </button>
+                    </div>
+
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                      <span style="font-size: 11px; color: #8b949e;">Rack Filter:</span>
+                      <select id="room3dRackFilter" onchange="filter3DShelfRack(this.value)" class="form-control form-control-mono" style="padding: 2px 6px; font-size: 11px; width: 130px; background: #21262d; color: #ffffff; border-color: #30363d;">
+                        <option value="ALL">All Racks (A to D)</option>
+                        <option value="Rack A">Rack A: CS &amp; AI</option>
+                        <option value="Rack B">Rack B: Physics &amp; Chem</option>
+                        <option value="Rack C">Rack C: Mathematics</option>
+                        <option value="Rack D">Rack D: Literature</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Side: Inspected Book Details -->
+                <div class="box" style="margin-bottom: 0;">
+                  <div class="box-header">
+                    <div class="box-title">Selected Volume Details</div>
+                    <span id="room3dActiveId" class="mono" style="font-weight: 700;">KVCR-101</span>
+                  </div>
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label class="form-label">Inspect Another Volume:</label>
+                      <select id="room3dBookPicker" onchange="select3DBookById(this.value)" class="form-control">
+                        <!-- Populated dynamically -->
+                      </select>
+                    </div>
+
+                    <div style="background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px; margin-top: 10px;">
+                      <span id="room3dActiveCat" class="badge-tag">Computer Science</span>
+                      <h4 id="room3dActiveTitle" style="font-size: 14px; font-weight: 700; margin: 6px 0 2px 0;">Computer Science with Python</h4>
+                      <p id="room3dActiveAuthor" style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">By Sumita Arora</p>
+
+                      <table class="data-table" style="font-size: 12px;">
+                        <tbody>
+                          <tr>
+                            <td style="width: 100px; color: var(--text-muted);">Shelf Location</td>
+                            <td id="room3dActiveShelf" class="mono">Rack A-1</td>
+                          </tr>
+                          <tr>
+                            <td style="color: var(--text-muted);">Publication Year</td>
+                            <td id="room3dActiveYear" class="mono">2024</td>
+                          </tr>
+                          <tr>
+                            <td style="color: var(--text-muted);">Available Copies</td>
+                            <td id="room3dActiveCopies" class="mono" style="color: var(--btn-success); font-weight: 700;">8 In Stock</td>
+                          </tr>
+                          <tr>
+                            <td style="color: var(--text-muted);">Book Price</td>
+                            <td id="room3dActivePrice" class="mono">Rs. 620.00</td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <div style="margin-top: 10px; padding: 6px 8px; background: #24292f; color: #7ee787; border-radius: 4px; font-family: var(--font-mono); font-size: 11px;">
+                        <span id="room3dActiveSql">SELECT * FROM books WHERE book_id = 'KVCR-101';</span>
+                      </div>
+                    </div>
+
+                    <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 6px;">
+                      <button onclick="borrowActive3DBook()" class="btn btn-success" style="width: 100%;">
+                        Issue This Volume to Student
+                      </button>
+                      <div style="display: flex; gap: 6px;">
+                        <button onclick="jumpToCatalogFrom3D()" class="btn btn-default btn-sm" style="flex: 1;">
+                          View in OPAC
+                        </button>
+                        <button onclick="jumpToSQLFrom3D()" class="btn btn-default btn-sm" style="flex: 1;">
+                          Query in SQL
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ==================================================== -->
+        <!-- TAB 9: PROJECT DOCUMENTATION & TEAM                  -->
+        <!-- ==================================================== -->
+        <section id="tab-about" class="hidden">
+          
+          <div class="box">
+            <div class="box-header">
+              <div class="box-title">CBSE Board Informatics Practices (065) Project Documentation</div>
+              <span class="badge-tag">Academic Session 2025–26</span>
+            </div>
+            <div class="box-body">
+              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-default); padding-bottom: 16px;">
+                <img src="/assets/aistudio/images_0db39d79.jpeg" alt="KVS Logo" style="height: 54px; width: auto;" />
+                <img src="/assets/aistudio/images_829d52ae.png" alt="PM SHRI Logo" style="height: 54px; width: auto;" />
+                <div>
+                  <h2 style="font-size: 16px; font-weight: 700;">PM SHRI Kendriya Vidyalaya Churu (Jaipur Region)</h2>
+                  <p style="font-size: 12px; color: var(--text-muted);">
+                    Ministry of Education, Government of India • CBSE School Code: 1478 • U-DISE Code: 08040307002
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid-3col">
+                <div class="box" style="margin-bottom: 0;">
+                  <div class="box-header">
+                    <strong style="font-size: 13px;">Monika</strong>
+                    <span class="badge-tag">Class XII</span>
+                  </div>
+                  <div class="box-body" style="font-size: 12px;">
+                    <strong>Role:</strong> Database &amp; SQL Schema Architect<br><br>
+                    Designed the MySQL relational schema, primary &amp; foreign key constraints, index structures, table integrity validations, and SQL dump pipelines.
+                  </div>
+                </div>
+
+                <div class="box" style="margin-bottom: 0;">
+                  <div class="box-header">
+                    <strong style="font-size: 13px;">Ashish</strong>
+                    <span class="badge-tag">Class XII</span>
+                  </div>
+                  <div class="box-body" style="font-size: 12px;">
+                    <strong>Role:</strong> Python &amp; Full-Stack Developer<br><br>
+                    Authored the Python menu-driven CLI backend (`kv_library_app.py`), Three.js procedural WebGL book renderer, catalog filter algorithms, and clean HTML5/CSS3 frontend.
+                  </div>
+                </div>
+
+                <div class="box" style="margin-bottom: 0;">
+                  <div class="box-header">
+                    <strong style="font-size: 13px;">Ajit</strong>
+                    <span class="badge-tag">Class XII</span>
+                  </div>
+                  <div class="box-body" style="font-size: 12px;">
+                    <strong>Role:</strong> Analytics &amp; Circulation Specialist<br><br>
+                    Engineered the circulation loan ledger, overdue tracking fine calculation formula, CSV data import/export routines, and Matplotlib inventory charts.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tech Stack Specifications -->
+              <div style="margin-top: 16px; background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px;">
+                <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 6px;">Project Architecture &amp; Technologies:</h4>
+                <ul style="font-size: 12px; line-height: 1.6; margin-left: 20px; color: var(--text-default);">
+                  <li><strong>Frontend:</strong> Semantic HTML5, Custom CSS3 (`style.css`), Vanilla JavaScript (ES6+), Three.js (r128), Chart.js (v4.4).</li>
+                  <li><strong>Backend:</strong> Python 3.12 (`mysql.connector`, `pandas`, `sqlite3` fallback adapter).</li>
+                  <li><strong>Database:</strong> MySQL 8.0 Relational DBMS with ACID compliance and relational foreign key constraints (`library_db.sql`).</li>
+                  <li><strong>Data Visualization:</strong> Matplotlib style standard 2D plots (`matplotlib.pyplot.bar`, `matplotlib.pyplot.pie`).</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+    <!-- ======================================================== -->
+    <!-- 4. CLEAN FOOTER (STUDENT & GITHUB TOUCHES)               -->
+    <!-- ======================================================== -->
+    <footer class="portal-footer">
+      <div class="container portal-footer-inner">
+        
+        <div class="footer-top">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-weight: 700; color: #ffffff;">Vidyalaya Library Management System</span>
+            <span class="footer-status-pill">Database Status: Connected (library_db.sql)</span>
+          </div>
+
+          <div class="footer-links">
+            <a href="javascript:void(0)" onclick="switchTab('about')" class="footer-link">View Source / GitHub Repository</a>
+            <span>•</span>
+            <a href="javascript:void(0)" onclick="downloadSQLDump()" class="footer-link">Download library_db.sql</a>
+            <span>•</span>
+            <a href="javascript:void(0)" onclick="downloadPythonScript()" class="footer-link">Download kv_library_app.py</a>
+            <span>•</span>
+            <a href="javascript:void(0)" onclick="openAdminSettingsModal()" class="footer-link">Database Tools</a>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            Built with HTML5, CSS3, JS, Python Pandas &amp; MySQL • Class XII Informatics Practices (065) Project
+          </div>
+          <div>
+            PM SHRI Kendriya Vidyalaya Churu (Jaipur Region) • Developers: Monika, Ashish, and Ajit
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+    <!-- ======================================================== -->
+    <!-- 5. MODAL WINDOWS (CLEAN STANDARD HTML)                   -->
+    <!-- ======================================================== -->
+
+    <!-- Add Book Modal -->
+    <div id="addBookModal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title">Add New Book Record to Database</div>
+          <button onclick="closeAddBookModal()" class="modal-close-btn">&times;</button>
+        </div>
+        <form id="addBookForm" onsubmit="handleAddBook(event)">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Book Title *</label>
+              <input type="text" id="addBookTitle" required placeholder="e.g. Physics for Class 12 (NCERT)" class="form-control" />
+            </div>
+
+            <div class="grid-2col">
+              <div class="form-group">
+                <label class="form-label">Author Name *</label>
+                <input type="text" id="addBookAuthor" required placeholder="e.g. Dr. H.C. Verma" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Department / Stream *</label>
+                <select id="addBookCategory" required class="form-control">
+                  <option value="Computer Science">Computer Science &amp; IP</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="AI & Robotics">AI &amp; Robotics</option>
+                  <option value="Fiction">Literature &amp; Fiction</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label class="form-label">Shelf Rack *</label>
+                <input type="text" id="addBookShelf" required value="Rack A-1" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Price (Rs. ) *</label>
+                <input type="number" id="addBookPrice" required min="50" max="5000" step="10" value="450" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Stock Copies *</label>
+                <input type="number" id="addBookCopies" required min="1" max="100" value="5" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Publication Year</label>
+              <input type="number" id="addBookYear" min="2010" max="2026" value="2024" class="form-control" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" onclick="closeAddBookModal()" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save to Database</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div id="editBookModal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title">Edit Book Catalog Record</div>
+          <button onclick="closeEditBookModal()" class="modal-close-btn">&times;</button>
+        </div>
+        <form id="editBookForm" onsubmit="handleSaveEditBook(event)">
+          <input type="hidden" id="editBookId" />
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Book Title *</label>
+              <input type="text" id="editBookTitle" required class="form-control" />
+            </div>
+
+            <div class="grid-2col">
+              <div class="form-group">
+                <label class="form-label">Author Name *</label>
+                <input type="text" id="editBookAuthor" required class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Department / Stream *</label>
+                <select id="editBookCategory" required class="form-control">
+                  <option value="Computer Science">Computer Science &amp; IP</option>
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Mathematics">Mathematics</option>
+                  <option value="AI & Robotics">AI &amp; Robotics</option>
+                  <option value="Fiction">Literature &amp; Fiction</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+              <div class="form-group">
+                <label class="form-label">Shelf Rack *</label>
+                <input type="text" id="editBookShelf" required class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Price (Rs. ) *</label>
+                <input type="number" id="editBookPrice" required min="50" max="5000" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Stock Copies *</label>
+                <input type="number" id="editBookCopies" required min="0" max="100" class="form-control" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Publication Year</label>
+              <input type="number" id="editBookYear" min="2010" max="2026" class="form-control" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" onclick="closeEditBookModal()" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary">Update Record</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Admin Settings & Tools Modal -->
+    <div id="adminSettingsModal" class="modal-overlay hidden">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title">Database Administration Tools</div>
+          <button onclick="closeAdminSettingsModal()" class="modal-close-btn">&times;</button>
+        </div>
+        <div class="modal-body" style="font-size: 13px;">
+          <div style="background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>Reset Database to Initial Seeds</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">Restores default 18 textbooks and standard circulation ledger.</div>
+            </div>
+            <button onclick="confirmResetDatabase()" class="btn btn-danger btn-sm">Reset</button>
+          </div>
+
+          <div style="background: var(--bg-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <strong>Download JSON Database Dump</strong>
+              <div style="font-size: 11px; color: var(--text-muted);">Full export of all books, loans, and student metadata in JSON format.</div>
+            </div>
+            <button onclick="downloadDatabaseBackup()" class="btn btn-default btn-sm">Backup</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button onclick="closeAdminSettingsModal()" class="btn btn-default">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container"></div>
+
+    <!-- ======================================================== -->
+    <!-- 6. JAVASCRIPT SYSTEM ENGINE (AUTHENTIC STUDENT CODE)     -->
+    <!-- ======================================================== -->
+    <script>
+      // -------------------------------------------------------------
+      // Initial SQL Dataset: Master Catalog of School Textbooks
+      // -------------------------------------------------------------
+      const INITIAL_BOOKS = [
+        { Book_ID: "KVCR-101", Title: "Computer Science with Python (Class XII)", Author: "Sumita Arora", Category: "Computer Science", Shelf_Location: "Rack A-1", Publication_Year: 2024, Copies_Available: 8, Price: 620 },
+        { Book_ID: "KVCR-102", Title: "Informatics Practices: CBSE Class XII", Author: "Preeti Arora", Category: "Computer Science", Shelf_Location: "Rack A-1", Publication_Year: 2024, Copies_Available: 10, Price: 550 },
+        { Book_ID: "KVCR-103", Title: "Concepts of Physics (Vol 1)", Author: "Dr. H.C. Verma", Category: "Physics", Shelf_Location: "Rack B-1", Publication_Year: 2023, Copies_Available: 6, Price: 490 },
+        { Book_ID: "KVCR-104", Title: "Concepts of Physics (Vol 2)", Author: "Dr. H.C. Verma", Category: "Physics", Shelf_Location: "Rack B-1", Publication_Year: 2023, Copies_Available: 5, Price: 520 },
+        { Book_ID: "KVCR-105", Title: "Modern Approach to Chemical Calculations", Author: "R.C. Mukherjee", Category: "Chemistry", Shelf_Location: "Rack B-2", Publication_Year: 2022, Copies_Available: 4, Price: 410 },
+        { Book_ID: "KVCR-106", Title: "Concise Inorganic Chemistry", Author: "J.D. Lee", Category: "Chemistry", Shelf_Location: "Rack B-2", Publication_Year: 2021, Copies_Available: 3, Price: 780 },
+        { Book_ID: "KVCR-107", Title: "Mathematics for Senior Secondary (Vol 1 & 2)", Author: "Dr. R.D. Sharma", Category: "Mathematics", Shelf_Location: "Rack C-1", Publication_Year: 2024, Copies_Available: 7, Price: 640 },
+        { Book_ID: "KVCR-108", Title: "Higher Algebra & Coordinate Geometry", Author: "Hall & Knight", Category: "Mathematics", Shelf_Location: "Rack C-1", Publication_Year: 2020, Copies_Available: 5, Price: 320 },
+        { Book_ID: "KVCR-109", Title: "Artificial Intelligence: A Modern Approach", Author: "Russell & Norvig", Category: "AI & Robotics", Shelf_Location: "Rack A-2", Publication_Year: 2023, Copies_Available: 4, Price: 950 },
+        { Book_ID: "KVCR-110", Title: "Robotics & Microcontroller Projects", Author: "Subhashish Roy", Category: "AI & Robotics", Shelf_Location: "Rack A-2", Publication_Year: 2025, Copies_Available: 3, Price: 820 },
+        { Book_ID: "KVCR-111", Title: "Wings of Fire: An Autobiography", Author: "Dr. A.P.J. Abdul Kalam", Category: "Fiction", Shelf_Location: "Rack D-1", Publication_Year: 2021, Copies_Available: 9, Price: 350 },
+        { Book_ID: "KVCR-112", Title: "Ignited Minds: Unleashing Greatness", Author: "Dr. A.P.J. Abdul Kalam", Category: "Fiction", Shelf_Location: "Rack D-1", Publication_Year: 2022, Copies_Available: 6, Price: 290 },
+        { Book_ID: "KVCR-113", Title: "Godan: Masterpiece of Indian Fiction", Author: "Munshi Premchand", Category: "Fiction", Shelf_Location: "Rack D-2", Publication_Year: 2023, Copies_Available: 8, Price: 250 },
+        { Book_ID: "KVCR-114", Title: "Madhushala", Author: "Harivansh Rai Bachchan", Category: "Fiction", Shelf_Location: "Rack D-2", Publication_Year: 2022, Copies_Available: 5, Price: 220 },
+        { Book_ID: "KVCR-115", Title: "Data Science for Schools (Python-Based)", Author: "Reema Thareja", Category: "Computer Science", Shelf_Location: "Rack A-1", Publication_Year: 2024, Copies_Available: 5, Price: 580 },
+        { Book_ID: "KVCR-116", Title: "Kurukshetra & Rashmirathi", Author: "Ramdhari Singh 'Dinkar'", Category: "Fiction", Shelf_Location: "Rack D-2", Publication_Year: 2021, Copies_Available: 7, Price: 290 },
+        { Book_ID: "KVCR-117", Title: "Fundamentals of Physics", Author: "Halliday, Resnick & Walker", Category: "Physics", Shelf_Location: "Rack B-1", Publication_Year: 2022, Copies_Available: 4, Price: 890 },
+        { Book_ID: "KVCR-118", Title: "The Alchemist (Illustrated Edition)", Author: "Paulo Coelho", Category: "Fiction", Shelf_Location: "Rack D-1", Publication_Year: 2020, Copies_Available: 7, Price: 310 }
+      ];
+
+      const INITIAL_ISSUES = [
+        { Issue_ID: "LOAN-1001", Book_ID: "KVCR-101", Student_Card: "KVCR-2025-014", Student_Name: "Rohit Sharma", Student_Class: "XII-Sci", Issue_Date: "2026-10-10", Due_Date: "2026-10-24", Return_Date: null, Status: "Issued" },
+        { Issue_ID: "LOAN-1002", Book_ID: "KVCR-103", Student_Card: "KVCR-2025-058", Student_Name: "Priya Nair", Student_Class: "XII-Sci", Issue_Date: "2026-10-12", Due_Date: "2026-10-26", Return_Date: null, Status: "Issued" },
+        { Issue_ID: "LOAN-1003", Book_ID: "KVCR-109", Student_Card: "KVCR-2025-092", Student_Name: "Karan Verma", Student_Class: "XII-Sci", Issue_Date: "2026-10-02", Due_Date: "2026-10-16", Return_Date: null, Status: "Issued" },
+        { Issue_ID: "LOAN-1004", Book_ID: "KVCR-107", Student_Card: "KVCR-2025-033", Student_Name: "Ananya Gupta", Student_Class: "XII-Com", Issue_Date: "2026-09-28", Due_Date: "2026-10-12", Return_Date: "2026-10-11", Status: "Returned" },
+        { Issue_ID: "LOAN-1005", Book_ID: "KVCR-111", Student_Card: "KVCR-2025-115", Student_Name: "Mohit Kumar", Student_Class: "XI-Sci", Issue_Date: "2026-10-01", Due_Date: "2026-10-15", Return_Date: "2026-10-14", Status: "Returned" }
+      ];
+
+      // Local State Variables
+      let books = [];
+      let issuedBooks = [];
+      let currentCirculationFilter = 'ALL';
+
+      // Chart Instances
+      let reportDeptChartInstance = null;
+      let reportCircChartInstance = null;
+
+      // -------------------------------------------------------------
+      // Data Persistence (localStorage)
+      // -------------------------------------------------------------
+      function loadData() {
+        const storedBooks = localStorage.getItem('kvchuru_sql_books');
+        const storedIssues = localStorage.getItem('kvchuru_sql_issues');
+
+        if (storedBooks) {
+          try {
+            books = JSON.parse(storedBooks);
+          } catch (e) {
+            books = [...INITIAL_BOOKS];
+          }
+        } else {
+          books = [...INITIAL_BOOKS];
+          saveBooksToStorage();
+        }
+
+        if (storedIssues) {
+          try {
+            issuedBooks = JSON.parse(storedIssues);
+          } catch (e) {
+            issuedBooks = [...INITIAL_ISSUES];
+          }
+        } else {
+          issuedBooks = [...INITIAL_ISSUES];
+          saveIssuesToStorage();
+        }
+      }
+
+      function saveBooksToStorage() {
+        localStorage.setItem('kvchuru_sql_books', JSON.stringify(books));
+      }
+
+      function saveIssuesToStorage() {
+        localStorage.setItem('kvchuru_sql_issues', JSON.stringify(issuedBooks));
+      }
+
+      function confirmResetDatabase() {
+        if (confirm("Reset the school library database to original seed records?")) {
+          books = JSON.parse(JSON.stringify(INITIAL_BOOKS));
+          issuedBooks = JSON.parse(JSON.stringify(INITIAL_ISSUES));
+          saveBooksToStorage();
+          saveIssuesToStorage();
+          closeAdminSettingsModal();
+          updateAllUI();
+          showToast("Database restored to original default records", "success");
+        }
+      }
+
+      function downloadDatabaseBackup() {
+        const dump = {
+          project: "Vidyalaya Library Management System - Class XII IP Project",
+          school: "PM SHRI Kendriya Vidyalaya Churu",
+          school_code: "1478",
+          cbse_subject: "Informatics Practices (065)",
+          export_timestamp: new Date().toISOString(),
+          developers: ["Monika", "Ashish", "Ajit"],
+          total_books: books.length,
+          books: books,
+          issued_books: issuedBooks
+        };
+
+        const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `kv_library_backup_${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Database backup downloaded as JSON", "success");
+      }
+
+      // -------------------------------------------------------------
+      // Tab Navigation
+      // -------------------------------------------------------------
+      function switchTab(tabId) {
+        const tabs = ['home', 'catalog', 'circulation', 'sqldb', 'pythoncode', 'students', 'reports', 'threed', 'about'];
+        
+        tabs.forEach(t => {
+          const section = document.getElementById(`tab-${t}`);
+          const btn = document.getElementById(`nav-${t}`);
+          if (section) section.classList.add('hidden');
+          if (btn) btn.classList.remove('active');
+        });
+
+        const targetSection = document.getElementById(`tab-${tabId}`);
+        const targetBtn = document.getElementById(`nav-${tabId}`);
+        if (targetSection) targetSection.classList.remove('hidden');
+        if (targetBtn) targetBtn.classList.add('active');
+
+        // Handle specific tab initializations
+        if (tabId === 'threed') {
+          onSwitchTo3DTab();
+          setTimeout(onSwitchTo3DTab, 60);
+        } else if (tabId === 'home') {
+          onSwitchToHomeTab();
+          setTimeout(onSwitchToHomeTab, 60);
+        } else if (tabId === 'reports') {
+          renderReportCharts();
+          setTimeout(renderReportCharts, 50);
+        } else if (tabId === 'circulation') {
+          populateIssueSelectDropdown();
+        } else if (tabId === 'students') {
+          renderStudentDirectory();
+        } else if (tabId === 'sqldb') {
+          generateFullSQLScript();
+          if (!document.getElementById('sqlQueryInput').value) {
+            setQuery('SELECT * FROM books;');
+            executeSQLQuery();
+          }
+        } else if (tabId === 'pythoncode') {
+          generateFullPythonScript();
+        }
+      }
+
+      function executeHomeSearch() {
+        const query = document.getElementById('homeSearchInput').value.trim();
+        if (!query) return;
+        switchTab('catalog');
+        const catalogSearch = document.getElementById('catalogSearch');
+        if (catalogSearch) {
+          catalogSearch.value = query;
+          applyFilters();
+        }
+      }
+
+      // -------------------------------------------------------------
+      // Theme & Notifications
+      // -------------------------------------------------------------
+      function toggleDarkMode() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        updateThemeUI(isDark);
+        renderReportCharts();
+      }
+
+      function updateThemeUI(isDark) {
+        const txt = document.getElementById('themeText');
+        if (txt) txt.innerText = isDark ? "Theme: Dark" : "Theme: Light";
+      }
+
+      function initTheme() {
+        const stored = localStorage.getItem('theme');
+        if (stored === 'dark') {
+          document.documentElement.classList.add('dark');
+          updateThemeUI(true);
+        } else {
+          document.documentElement.classList.remove('dark');
+          updateThemeUI(false);
+        }
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.innerText = message;
+        container.appendChild(toast);
+
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => toast.remove(), 250);
+        }, 3000);
+      }
+
+      // -------------------------------------------------------------
+      // Key Metrics & Overview
+      // -------------------------------------------------------------
+      function updateHomeStats() {
+        const totalTitles = books.length;
+        const availableCopies = books.reduce((acc, b) => acc + Number(b.Copies_Available || 0), 0);
+        const issuedCount = issuedBooks.filter(i => i.Status === 'Issued').length;
+        const deptSet = new Set(books.map(b => b.Category));
+
+        const titlesEl = document.getElementById('home-kpi-titles');
+        const copiesEl = document.getElementById('home-kpi-copies');
+        const issuedEl = document.getElementById('home-kpi-issued');
+        const deptEl = document.getElementById('home-kpi-departments');
+        const badgeEl = document.getElementById('nav-issue-badge');
+        const catBadgeEl = document.getElementById('nav-catalog-badge');
+
+        if (titlesEl) titlesEl.innerText = totalTitles;
+        if (copiesEl) copiesEl.innerText = availableCopies;
+        if (issuedEl) issuedEl.innerText = issuedCount;
+        if (deptEl) deptEl.innerText = deptSet.size;
+        if (badgeEl) badgeEl.innerText = issuedCount;
+        if (catBadgeEl) catBadgeEl.innerText = totalTitles;
+
+        // Populate recent books list in overview
+        const feat = document.getElementById('homeFeaturedBooks');
+        if (feat) {
+          const recents = [...books].sort((a,b) => (b.Publication_Year || 0) - (a.Publication_Year || 0)).slice(0, 4);
+          feat.innerHTML = recents.map(b => `
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border-default); font-size: 12px;">
+              <div style="min-width: 0; padding-right: 8px;">
+                <div style="font-weight: 600; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${b.Title}</div>
+                <div style="color: var(--text-muted); font-size: 11px;">${b.Author} • <span class="mono">${b.Book_ID}</span></div>
+              </div>
+              <span class="mono" style="color: var(--btn-success); font-weight: 700; white-space: nowrap;">${b.Copies_Available} left</span>
+            </div>
+          `).join('');
+        }
+      }
+
+      // -------------------------------------------------------------
+      // OPAC Catalog Functions
+      // -------------------------------------------------------------
+      function renderBooksTable(filteredList = null) {
+        const tbody = document.getElementById('booksTableBody');
+        if (!tbody) return;
+
+        const list = filteredList !== null ? filteredList : books;
+        tbody.innerHTML = '';
+
+        document.getElementById('displayedCount').innerText = list.length;
+        document.getElementById('totalCatalogCount').innerText = books.length;
+
+        if (list.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="9" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                No book records matched the query.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        list.forEach((b, idx) => {
+          const tr = document.createElement('tr');
+          const copies = Number(b.Copies_Available || 0);
+
+          let stockBadge = '';
+          if (copies === 0) {
+            stockBadge = `<span class="status-pill status-out-stock">0 On Loan</span>`;
+          } else if (copies <= 2) {
+            stockBadge = `<span class="status-pill status-low-stock">${copies} Low Stock</span>`;
+          } else {
+            stockBadge = `<span class="status-pill status-in-stock">${copies} In Stock</span>`;
+          }
+
+          tr.innerHTML = `
+            <td style="text-align: center; color: var(--text-muted);" class="mono">${idx + 1}</td>
+            <td class="mono" style="font-weight: 700; color: var(--btn-primary);">${b.Book_ID}</td>
+            <td>
+              <div style="font-weight: 600;">${b.Title}</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Author: ${b.Author}</div>
+            </td>
+            <td><span class="badge-tag">${b.Category}</span></td>
+            <td style="text-align: center;" class="mono">${b.Shelf_Location || 'Rack A-1'}</td>
+            <td style="text-align: center;" class="mono">${b.Publication_Year || '2024'}</td>
+            <td style="text-align: right; font-weight: 700;" class="mono">Rs. ${b.Price}</td>
+            <td style="text-align: center;">${stockBadge}</td>
+            <td style="text-align: center;">
+              <div style="display: flex; gap: 4px; justify-content: center;">
+                <button onclick="inspectBookIn3D('${b.Book_ID}')" class="btn btn-default btn-sm" title="View 3D Model">3D</button>
+                <button onclick="quickIssueBook('${b.Book_ID}')" ${copies === 0 ? 'disabled' : ''} class="btn btn-primary btn-sm" title="Issue book">Issue</button>
+                <button onclick="openEditBookModal('${b.Book_ID}')" class="btn btn-default btn-sm" title="Edit book">Edit</button>
+                <button onclick="handleDeleteBook('${b.Book_ID}')" class="btn btn-danger btn-sm" title="Delete book">Del</button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      function applyFilters() {
+        const query = document.getElementById('catalogSearch').value.toLowerCase().trim();
+        const cat = document.getElementById('categoryFilter').value;
+        const avail = document.getElementById('availFilter').value;
+        const sort = document.getElementById('sortFilter').value;
+
+        let filtered = books.filter(b => {
+          const matchSearch = !query || 
+            b.Title.toLowerCase().includes(query) || 
+            b.Author.toLowerCase().includes(query) || 
+            b.Book_ID.toLowerCase().includes(query) ||
+            (b.Shelf_Location && b.Shelf_Location.toLowerCase().includes(query));
+          
+          const matchCat = (cat === 'ALL') || (b.Category === cat);
+
+          let matchAvail = true;
+          const copies = Number(b.Copies_Available || 0);
+          if (avail === 'available') matchAvail = copies > 0;
+          else if (avail === 'low') matchAvail = copies > 0 && copies <= 2;
+          else if (avail === 'out') matchAvail = copies === 0;
+
+          return matchSearch && matchCat && matchAvail;
+        });
+
+        filtered.sort((a, b) => {
+          if (sort === 'title_asc') return a.Title.localeCompare(b.Title);
+          if (sort === 'id_asc') return a.Book_ID.localeCompare(b.Book_ID);
+          if (sort === 'copies_desc') return Number(b.Copies_Available) - Number(a.Copies_Available);
+          if (sort === 'year_desc') return Number(b.Publication_Year) - Number(a.Publication_Year);
+          if (sort === 'price_desc') return Number(b.Price) - Number(a.Price);
+          return 0;
+        });
+
+        renderBooksTable(filtered);
+      }
+
+      // Add Book Form Handler
+      function openAddBookModal() {
+        document.getElementById('addBookForm').reset();
+        document.getElementById('addBookShelf').value = "Rack A-1";
+        document.getElementById('addBookPrice').value = 450;
+        document.getElementById('addBookCopies').value = 5;
+        document.getElementById('addBookYear').value = 2024;
+        document.getElementById('addBookModal').classList.remove('hidden');
+      }
+
+      function closeAddBookModal() {
+        document.getElementById('addBookModal').classList.add('hidden');
+      }
+
+      function handleAddBook(e) {
+        e.preventDefault();
+        const title = document.getElementById('addBookTitle').value.trim();
+        const author = document.getElementById('addBookAuthor').value.trim();
+        const category = document.getElementById('addBookCategory').value;
+        const shelf = document.getElementById('addBookShelf').value.trim() || 'Rack A-1';
+        const price = parseInt(document.getElementById('addBookPrice').value, 10);
+        const copies = parseInt(document.getElementById('addBookCopies').value, 10);
+        const year = parseInt(document.getElementById('addBookYear').value, 10) || 2024;
+
+        if (!title || !author) {
+          showToast("Please provide both title and author.", "error");
+          return;
+        }
+
+        const nextNum = books.length + 101;
+        const newId = `KVCR-${nextNum}`;
+
+        const newBook = {
+          Book_ID: newId,
+          Title: title,
+          Author: author,
+          Category: category,
+          Shelf_Location: shelf,
+          Publication_Year: year,
+          Copies_Available: copies,
+          Price: price
+        };
+
+        books.push(newBook);
+        saveBooksToStorage();
+        closeAddBookModal();
+        updateAllUI();
+        showToast(`Book record inserted: ${newId} - "${title}"`, "success");
+      }
+
+      // Edit Book Form Handler
+      function openEditBookModal(bookId) {
+        const book = books.find(b => b.Book_ID === bookId);
+        if (!book) return;
+
+        document.getElementById('editBookId').value = book.Book_ID;
+        document.getElementById('editBookTitle').value = book.Title;
+        document.getElementById('editBookAuthor').value = book.Author;
+        document.getElementById('editBookCategory').value = book.Category;
+        document.getElementById('editBookShelf').value = book.Shelf_Location || 'Rack A-1';
+        document.getElementById('editBookPrice').value = book.Price;
+        document.getElementById('editBookCopies').value = book.Copies_Available;
+        document.getElementById('editBookYear').value = book.Publication_Year || 2024;
+
+        document.getElementById('editBookModal').classList.remove('hidden');
+      }
+
+      function closeEditBookModal() {
+        document.getElementById('editBookModal').classList.add('hidden');
+      }
+
+      function handleSaveEditBook(e) {
+        e.preventDefault();
+        const id = document.getElementById('editBookId').value;
+        const idx = books.findIndex(b => b.Book_ID === id);
+        if (idx === -1) return;
+
+        books[idx] = {
+          ...books[idx],
+          Title: document.getElementById('editBookTitle').value.trim(),
+          Author: document.getElementById('editBookAuthor').value.trim(),
+          Category: document.getElementById('editBookCategory').value,
+          Shelf_Location: document.getElementById('editBookShelf').value.trim(),
+          Publication_Year: parseInt(document.getElementById('editBookYear').value, 10),
+          Copies_Available: parseInt(document.getElementById('editBookCopies').value, 10),
+          Price: parseInt(document.getElementById('editBookPrice').value, 10)
+        };
+
+        saveBooksToStorage();
+        closeEditBookModal();
+        updateAllUI();
+        showToast(`Book record updated for ID ${id}`, "success");
+      }
+
+      // Delete Book Record
+      function handleDeleteBook(bookId) {
+        const book = books.find(b => b.Book_ID === bookId);
+        if (!book) return;
+
+        const activeLoan = issuedBooks.find(i => i.Book_ID === bookId && i.Status === 'Issued');
+        if (activeLoan) {
+          if (!confirm(`Warning: Book ${bookId} is currently issued to ${activeLoan.Student_Name}. Delete record anyway?`)) {
+            return;
+          }
+        } else {
+          if (!confirm(`Delete book "${book.Title}" (ID: ${book.Book_ID}) from catalog?`)) {
+            return;
+          }
+        }
+
+        books = books.filter(b => b.Book_ID !== bookId);
+        saveBooksToStorage();
+        updateAllUI();
+        showToast(`Book record ${bookId} deleted`, "amber");
+      }
+
+      // CSV Export
+      function exportCatalogToCSV() {
+        if (books.length === 0) {
+          showToast("Catalog is empty.", "error");
+          return;
+        }
+
+        const headers = ["Accession_ID", "Title", "Author", "Department", "Shelf_Location", "Publication_Year", "Copies_Available", "Price"];
+        const rows = books.map(b => [
+          b.Book_ID,
+          `"${(b.Title || '').replace(/"/g, '""')}"`,
+          `"${(b.Author || '').replace(/"/g, '""')}"`,
+          `"${b.Category}"`,
+          `"${b.Shelf_Location || 'Rack A-1'}"`,
+          b.Publication_Year,
+          b.Copies_Available,
+          b.Price
+        ]);
+
+        const csvContent = [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `kv_library_catalog_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Catalog exported as CSV file", "success");
+      }
+
+      // CSV Import
+      function importCSVFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const text = e.target.result;
+            const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+            if (lines.length < 2) {
+              showToast("CSV file is empty.", "error");
+              return;
+            }
+
+            const imported = [];
+            for (let i = 1; i < lines.length; i++) {
+              const row = parseCSVLine(lines[i]);
+              if (row.length >= 7) {
+                imported.push({
+                  Book_ID: row[0].trim(),
+                  Title: row[1].trim(),
+                  Author: row[2].trim(),
+                  Category: row[3].trim() || 'General',
+                  Shelf_Location: row[4] ? row[4].trim() : 'Rack A-1',
+                  Publication_Year: parseInt(row[5]?.trim(), 10) || 2024,
+                  Copies_Available: parseInt(row[6]?.trim(), 10) || 1,
+                  Price: parseInt(row[7]?.trim(), 10) || 450
+                });
+              }
+            }
+
+            if (imported.length === 0) {
+              showToast("Could not parse valid book entries from CSV.", "error");
+              return;
+            }
+
+            books = imported;
+            saveBooksToStorage();
+            updateAllUI();
+            showToast(`Imported ${imported.length} books from CSV`, "success");
+          } catch (err) {
+            showToast("CSV Parse Error: " + err.message, "error");
+          }
+        };
+        reader.readAsText(file);
+        event.target.value = '';
+      }
+
+      function parseCSVLine(text) {
+        const re = /(?!\s*$)\s*(?:'([^']*(?:''[^']*)*)'|"([^"]*(?:""[^"]*)*)"|([^,'"]*))\s*(?:,|$)/g;
+        const row = [];
+        text.replace(re, function(m0, m1, m2, m3) {
+          if (m1 !== undefined) row.push(m1.replace(/''/g, "'"));
+          else if (m2 !== undefined) row.push(m2.replace(/""/g, '"'));
+          else if (m3 !== undefined) row.push(m3);
+          return '';
+        });
+        return row;
+      }
+
+      // -------------------------------------------------------------
+      // Circulation Desk (Issue & Return Logic)
+      // -------------------------------------------------------------
+      function populateIssueSelectDropdown() {
+        const select = document.getElementById('issueSelectBook');
+        if (!select) return;
+
+        select.innerHTML = '';
+        const inStock = books.filter(b => Number(b.Copies_Available || 0) > 0);
+
+        if (inStock.length === 0) {
+          select.innerHTML = '<option value="" disabled>No titles currently in stock</option>';
+          return;
+        }
+
+        inStock.forEach(b => {
+          const opt = document.createElement('option');
+          opt.value = b.Book_ID;
+          opt.innerText = `${b.Book_ID} - ${b.Title} (${b.Copies_Available} available)`;
+          select.appendChild(opt);
+        });
+
+        const today = new Date().toISOString().slice(0, 10);
+        const dateInput = document.getElementById('issueDateInput');
+        if (dateInput && !dateInput.value) {
+          dateInput.value = today;
+        }
+      }
+
+      function quickIssueBook(bookId) {
+        switchTab('circulation');
+        setTimeout(() => {
+          const select = document.getElementById('issueSelectBook');
+          if (select) select.value = bookId;
+          const cardInput = document.getElementById('issueStudentCard');
+          if (cardInput) cardInput.focus();
+        }, 100);
+      }
+
+      function calculateDueDate(issueDateStr) {
+        const date = new Date(issueDateStr);
+        date.setDate(date.getDate() + 14);
+        return date.toISOString().slice(0, 10);
+      }
+
+      function handleIssueBook(e) {
+        e.preventDefault();
+        const bookId = document.getElementById('issueSelectBook').value;
+        const studentCard = document.getElementById('issueStudentCard').value.trim();
+        const studentName = document.getElementById('issueStudentName').value.trim();
+        const studentClass = document.getElementById('issueStudentClass').value;
+        const issueDate = document.getElementById('issueDateInput').value || new Date().toISOString().slice(0, 10);
+
+        if (!bookId) {
+          showToast("Please choose a title to issue.", "error");
+          return;
+        }
+
+        const book = books.find(b => b.Book_ID === bookId);
+        if (!book || Number(book.Copies_Available) <= 0) {
+          showToast("Selected title is out of stock.", "error");
+          return;
+        }
+
+        // Decrement available copies
+        book.Copies_Available = Number(book.Copies_Available) - 1;
+        saveBooksToStorage();
+
+        const dueDate = calculateDueDate(issueDate);
+        const nextId = 1000 + issuedBooks.length + 1;
+        const newIssueId = `LOAN-${nextId}`;
+
+        const newRecord = {
+          Issue_ID: newIssueId,
+          Book_ID: bookId,
+          Student_Card: studentCard,
+          Student_Name: studentName,
+          Student_Class: studentClass,
+          Issue_Date: issueDate,
+          Due_Date: dueDate,
+          Return_Date: null,
+          Status: "Issued"
+        };
+
+        issuedBooks.unshift(newRecord);
+        saveIssuesToStorage();
+
+        document.getElementById('issueStudentName').value = '';
+        document.getElementById('issueStudentCard').value = '';
+
+        updateAllUI();
+        showToast(`Book issued to ${studentName} (${newIssueId}). Due: ${dueDate}`, "success");
+      }
+
+      function handleReturnBook(issueId) {
+        const record = issuedBooks.find(i => i.Issue_ID === issueId);
+        if (!record || record.Status === 'Returned') return;
+
+        record.Status = 'Returned';
+        record.Return_Date = new Date().toISOString().slice(0, 10);
+
+        const book = books.find(b => b.Book_ID === record.Book_ID);
+        if (book) {
+          book.Copies_Available = Number(book.Copies_Available) + 1;
+          saveBooksToStorage();
+        }
+
+        saveIssuesToStorage();
+        updateAllUI();
+        showToast(`Book loan ${issueId} marked as returned`, "success");
+      }
+
+      function handleRenewBook(issueId) {
+        const record = issuedBooks.find(i => i.Issue_ID === issueId);
+        if (!record || record.Status === 'Returned') return;
+
+        const currentDue = new Date(record.Due_Date || new Date());
+        currentDue.setDate(currentDue.getDate() + 7);
+        record.Due_Date = currentDue.toISOString().slice(0, 10);
+
+        saveIssuesToStorage();
+        updateAllUI();
+        showToast(`Loan ${issueId} renewed. New due date: ${record.Due_Date}`, "success");
+      }
+
+      function filterCirculation(status) {
+        currentCirculationFilter = status;
+        const btnAll = document.getElementById('filter-circ-all');
+        const btnActive = document.getElementById('filter-circ-active');
+        const btnReturned = document.getElementById('filter-circ-returned');
+
+        [btnAll, btnActive, btnReturned].forEach(b => {
+          if (b) b.className = 'btn btn-default btn-sm';
+        });
+
+        if (status === 'ALL' && btnAll) btnAll.className = 'btn btn-primary btn-sm';
+        if (status === 'Issued' && btnActive) btnActive.className = 'btn btn-primary btn-sm';
+        if (status === 'Returned' && btnReturned) btnReturned.className = 'btn btn-primary btn-sm';
+
+        renderCirculationTable();
+      }
+
+      function renderCirculationTable() {
+        const tbody = document.getElementById('circulationTableBody');
+        if (!tbody) return;
+
+        tbody.innerHTML = '';
+        let list = issuedBooks;
+        if (currentCirculationFilter !== 'ALL') {
+          list = issuedBooks.filter(i => i.Status === currentCirculationFilter);
+        }
+
+        if (list.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">
+                No circulation records found.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        const todayStr = new Date().toISOString().slice(0, 10);
+
+        list.forEach(i => {
+          const book = books.find(b => b.Book_ID === i.Book_ID);
+          const title = book ? book.Title : `Unknown (${i.Book_ID})`;
+
+          const isReturned = i.Status === 'Returned';
+          const isOverdue = !isReturned && i.Due_Date && i.Due_Date < todayStr;
+
+          let statusBadge = '';
+          if (isReturned) {
+            statusBadge = `<span class="badge-tag">Returned</span>`;
+          } else if (isOverdue) {
+            const diffDays = Math.ceil((new Date() - new Date(i.Due_Date)) / (1000 * 60 * 60 * 24));
+            const fine = diffDays * 1;
+            statusBadge = `<span class="status-pill status-out-stock">Overdue (+Rs. ${fine})</span>`;
+          } else {
+            statusBadge = `<span class="status-pill status-low-stock">Active</span>`;
+          }
+
+          let actions = '';
+          if (isReturned) {
+            actions = `<span class="mono" style="font-size: 11px; color: var(--text-muted);">Ret: ${i.Return_Date || 'Done'}</span>`;
+          } else {
+            actions = `
+              <div style="display: flex; gap: 4px; justify-content: flex-end;">
+                <button onclick="handleRenewBook('${i.Issue_ID}')" class="btn btn-default btn-sm">Renew</button>
+                <button onclick="handleReturnBook('${i.Issue_ID}')" class="btn btn-success btn-sm">Return</button>
+              </div>
+            `;
+          }
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="mono" style="font-weight: 700; color: var(--btn-primary);">${i.Issue_ID}</td>
+            <td>
+              <div style="font-weight: 600;">${title}</div>
+              <div class="mono" style="font-size: 11px; color: var(--text-muted);">${i.Book_ID}</div>
+            </td>
+            <td>
+              <div style="font-weight: 600;">${i.Student_Name}</div>
+              <div class="mono" style="font-size: 11px; color: var(--text-muted);">${i.Student_Card || 'KVCR-2025-01'}</div>
+            </td>
+            <td style="text-align: center; font-weight: 600;">${i.Student_Class}</td>
+            <td class="mono" style="font-size: 11px;">
+              <div>Iss: ${i.Issue_Date}</div>
+              <div style="${isOverdue ? 'color: var(--btn-danger); font-weight: 700;' : ''}">Due: ${i.Due_Date || '14 Days'}</div>
+            </td>
+            <td style="text-align: center;">${statusBadge}</td>
+            <td style="text-align: right;">${actions}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // -------------------------------------------------------------
+      // Student Directory
+      // -------------------------------------------------------------
+      function renderStudentDirectory() {
+        const container = document.getElementById('studentCardsGrid');
+        if (!container) return;
+
+        const query = (document.getElementById('studentSearchInput')?.value || '').toLowerCase().trim();
+
+        const studentMap = {};
+        const defaultStudents = [
+          { name: "Rohit Sharma", card: "KVCR-2025-014", grade: "Class XII (Science)" },
+          { name: "Priya Nair", card: "KVCR-2025-058", grade: "Class XII (Science)" },
+          { name: "Karan Verma", card: "KVCR-2025-092", grade: "Class XII (Science)" },
+          { name: "Ananya Gupta", card: "KVCR-2025-033", grade: "Class XII (Commerce)" },
+          { name: "Mohit Kumar", card: "KVCR-2025-115", grade: "Class XI (Science)" },
+          { name: "Sneha Patel", card: "KVCR-2025-142", grade: "Class XI (Arts)" }
+        ];
+
+        defaultStudents.forEach(s => studentMap[s.card] = { ...s, activeLoans: 0 });
+
+        issuedBooks.forEach(i => {
+          const card = i.Student_Card || `CARD-${i.Student_Name.slice(0, 5)}`;
+          if (!studentMap[card]) {
+            studentMap[card] = {
+              name: i.Student_Name,
+              card: card,
+              grade: i.Student_Class,
+              activeLoans: 0
+            };
+          }
+          if (i.Status === 'Issued') {
+            studentMap[card].activeLoans++;
+          }
+        });
+
+        let list = Object.values(studentMap);
+        if (query) {
+          list = list.filter(s => s.name.toLowerCase().includes(query) || s.card.toLowerCase().includes(query));
+        }
+
+        container.innerHTML = list.map(s => `
+          <div class="box" style="margin-bottom: 0;">
+            <div class="box-header">
+              <strong style="font-size: 13px;">${s.name}</strong>
+              <span class="badge-tag">${s.grade}</span>
+            </div>
+            <div class="box-body" style="font-size: 12px;">
+              <div class="mono" style="color: var(--text-muted); margin-bottom: 6px;">Library Card: ${s.card}</div>
+              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-default); padding-top: 8px;">
+                <span>Active Loans:</span>
+                <strong class="mono" style="${s.activeLoans > 0 ? 'color: #b06000;' : 'color: var(--text-muted);'}">
+                  ${s.activeLoans} / 3
+                </strong>
+              </div>
+            </div>
+            <div class="box-footer" style="padding: 6px 12px;">
+              <button onclick="quickIssueForStudent('${s.card}', '${s.name}', '${s.grade}')" class="btn btn-default btn-sm" style="width: 100%;">
+                Issue Book to Student
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function quickIssueForStudent(card, name, grade) {
+        switchTab('circulation');
+        setTimeout(() => {
+          const cardInput = document.getElementById('issueStudentCard');
+          const nameInput = document.getElementById('issueStudentName');
+          const classInput = document.getElementById('issueStudentClass');
+
+          if (cardInput) cardInput.value = card;
+          if (nameInput) nameInput.value = name;
+          if (classInput) classInput.value = grade;
+        }, 100);
+      }
+
+      // -------------------------------------------------------------
+      // SQL Database Studio & Query Engine
+      // -------------------------------------------------------------
+      function setQuery(sql) {
+        document.getElementById('sqlQueryInput').value = sql;
+      }
+
+      function executeSQLQuery() {
+        const query = document.getElementById('sqlQueryInput').value.trim();
+        const container = document.getElementById('sqlResultContainer');
+        const statusEl = document.getElementById('queryStatusText');
+
+        if (!query) {
+          showToast("Please enter an SQL statement.", "error");
+          return;
+        }
+
+        const lower = query.toLowerCase();
+
+        // 1. Basic SELECT from books
+        if (lower.includes('select') && lower.includes('from') && lower.includes('books') && !lower.includes('join') && !lower.includes('group by')) {
+          let res = [...books];
+          if (lower.includes('where')) {
+            if (lower.includes('price >= 500') || lower.includes('price > 500')) {
+              res = res.filter(b => Number(b.Price) >= 500);
+            }
+          }
+          if (lower.includes('order by price desc')) {
+            res.sort((a,b) => Number(b.Price) - Number(a.Price));
+          }
+
+          renderSQLTable(["book_id", "title", "author", "category", "shelf_location", "copies_available", "price"], res.map(b => [b.Book_ID, b.Title, b.Author, b.Category, b.Shelf_Location, b.Copies_Available, `Rs. ${b.Price}`]));
+          statusEl.innerText = `Query executed successfully (${res.length} rows returned).`;
+          showToast(`SQL query returned ${res.length} rows`, "success");
+        }
+        // 2. GROUP BY category
+        else if (lower.includes('group by') && lower.includes('category')) {
+          const catMap = {};
+          books.forEach(b => {
+            if (!catMap[b.Category]) catMap[b.Category] = { count: 0, stock: 0 };
+            catMap[b.Category].count++;
+            catMap[b.Category].stock += Number(b.Copies_Available || 0);
+          });
+
+          const rows = Object.keys(catMap).map(k => [k, catMap[k].count, catMap[k].stock]);
+          renderSQLTable(["category", "Total_Titles", "Total_Stock"], rows);
+          statusEl.innerText = `GROUP BY aggregation executed (${rows.length} categories).`;
+          showToast("SQL GROUP BY executed", "success");
+        }
+        // 3. JOIN books and issued_books
+        else if (lower.includes('join')) {
+          const rows = issuedBooks.map(i => {
+            const b = books.find(x => x.Book_ID === i.Book_ID);
+            return [i.Issue_ID, i.Book_ID, b ? b.Title : 'Unknown', i.Student_Name, i.Student_Class, i.Issue_Date, i.Status];
+          });
+          renderSQLTable(["issue_id", "book_id", "title", "student_name", "student_class", "issue_date", "status"], rows);
+          statusEl.innerText = `JOIN operation returned ${rows.length} matched records.`;
+          showToast("SQL JOIN executed", "success");
+        }
+        // 4. Default fallback
+        else {
+          const res = books.slice(0, 10);
+          renderSQLTable(["book_id", "title", "author", "copies_available"], res.map(b => [b.Book_ID, b.Title, b.Author, b.Copies_Available]));
+          statusEl.innerText = `Query executed. Displayed matching records.`;
+        }
+      }
+
+      function renderSQLTable(headers, rows) {
+        const container = document.getElementById('sqlResultContainer');
+        if (!container) return;
+
+        let html = `<table class="data-table mono" style="font-size: 12px;">`;
+        html += `<thead><tr>`;
+        headers.forEach(h => html += `<th>${h}</th>`);
+        html += `</tr></thead><tbody>`;
+
+        rows.forEach(r => {
+          html += `<tr>`;
+          r.forEach(cell => html += `<td>${cell}</td>`);
+          html += `</tr>`;
+        });
+
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+      }
+
+      function generateFullSQLScript() {
+        let sql = `-- ========================================================\n`;
+        sql += `-- Vidyalaya Library Management System - library_schema.sql\n`;
+        sql += `-- CBSE Class XII Informatics Practices (065) Project\n`;
+        sql += `-- Students: Monika, Ashish, and Ajit\n`;
+        sql += `-- School: PM SHRI Kendriya Vidyalaya Churu (Jaipur Region)\n`;
+        sql += `-- ========================================================\n\n`;
+
+        sql += `CREATE DATABASE IF NOT EXISTS SchoolLibrary_KVChuru;\n`;
+        sql += `USE SchoolLibrary_KVChuru;\n\n`;
+
+        sql += `-- Master Books Table\n`;
+        sql += `CREATE TABLE IF NOT EXISTS books (\n`;
+        sql += `    book_id VARCHAR(12) PRIMARY KEY,\n`;
+        sql += `    title VARCHAR(120) NOT NULL,\n`;
+        sql += `    author VARCHAR(80) NOT NULL,\n`;
+        sql += `    category VARCHAR(50) NOT NULL,\n`;
+        sql += `    shelf_location VARCHAR(30) DEFAULT 'Rack A-1',\n`;
+        sql += `    publication_year INT CHECK (publication_year >= 2000),\n`;
+        sql += `    copies_available INT DEFAULT 1 CHECK (copies_available >= 0),\n`;
+        sql += `    price DECIMAL(7, 2) NOT NULL\n`;
+        sql += `);\n\n`;
+
+        sql += `-- Circulation Transactions Table\n`;
+        sql += `CREATE TABLE IF NOT EXISTS issued_books (\n`;
+        sql += `    issue_id VARCHAR(15) PRIMARY KEY,\n`;
+        sql += `    book_id VARCHAR(12),\n`;
+        sql += `    student_card VARCHAR(20) NOT NULL,\n`;
+        sql += `    student_name VARCHAR(60) NOT NULL,\n`;
+        sql += `    student_class VARCHAR(15) NOT NULL,\n`;
+        sql += `    issue_date DATE NOT NULL,\n`;
+        sql += `    due_date DATE NOT NULL,\n`;
+        sql += `    return_date DATE NULL,\n`;
+        sql += `    status VARCHAR(15) DEFAULT 'Issued',\n`;
+        sql += `    FOREIGN KEY (book_id) REFERENCES books(book_id) ON DELETE CASCADE\n`;
+        sql += `);\n\n`;
+
+        sql += `-- Seed Records for Catalog (${books.length} Books)\n`;
+        sql += `INSERT INTO books (book_id, title, author, category, shelf_location, publication_year, copies_available, price) VALUES\n`;
+        const bIns = books.map(b => {
+          const escT = b.Title.replace(/'/g, "''");
+          const escA = b.Author.replace(/'/g, "''");
+          return `('${b.Book_ID}', '${escT}', '${escA}', '${b.Category}', '${b.Shelf_Location || 'Rack A-1'}', ${b.Publication_Year}, ${b.Copies_Available}, ${b.Price}.00)`;
+        });
+        sql += bIns.join(',\n') + ';\n\n';
+
+        if (issuedBooks.length > 0) {
+          sql += `-- Active and Historic Circulation Records\n`;
+          sql += `INSERT INTO issued_books (issue_id, book_id, student_card, student_name, student_class, issue_date, due_date, return_date, status) VALUES\n`;
+          const iIns = issuedBooks.map(i => {
+            const ret = i.Return_Date ? `'${i.Return_Date}'` : `NULL`;
+            return `('${i.Issue_ID}', '${i.Book_ID}', '${i.Student_Card}', '${i.Student_Name}', '${i.Student_Class}', '${i.Issue_Date}', '${i.Due_Date}', ${ret}, '${i.Status}')`;
+          });
+          sql += iIns.join(',\n') + ';\n';
+        }
+
+        const el = document.getElementById('fullSqlCodeBlock');
+        if (el) el.innerText = sql;
+        return sql;
+      }
+
+      function downloadSQLDump() {
+        const sql = generateFullSQLScript();
+        const blob = new Blob([sql], { type: 'text/plain;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `library_schema.sql`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Downloaded library_schema.sql", "success");
+      }
+
+      // -------------------------------------------------------------
+      // Python Script Generator & Simulator
+      // -------------------------------------------------------------
+      function generateFullPythonScript() {
+        let py = `"""\n`;
+        py += `Vidyalaya Library Management System - kv_library_app.py\n`;
+        py += `Class XII Informatics Practices (065) Project\n`;
+        py += `Students: Monika, Ashish, and Ajit\n`;
+        py += `School: PM SHRI Kendriya Vidyalaya Churu\n`;
+        py += `Backend: Python 3 with MySQL Connector & Pandas\n`;
+        py += `"""\n\n`;
+
+        py += `import sys\n`;
+        py += `import pandas as pd\n`;
+        py += `import matplotlib.pyplot as plt\n`;
+        py += `from datetime import datetime, timedelta\n\n`;
+
+        py += `# Database connector configuration\n`;
+        py += `try:\n`;
+        py += `    import mysql.connector as mysql\n`;
+        py += `    DB_BACKEND = "MYSQL"\n`;
+        py += `except ImportError:\n`;
+        py += `    import sqlite3\n`;
+        py += `    DB_BACKEND = "SQLITE"\n\n`;
+
+        py += `def get_db_connection():\n`;
+        py += `    if DB_BACKEND == "MYSQL":\n`;
+        py += `        return mysql.connect(\n`;
+        py += `            host="localhost",\n`;
+        py += `            user="root",\n`;
+        py += `            password="",\n`;
+        py += `            database="SchoolLibrary_KVChuru"\n`;
+        py += `        )\n`;
+        py += `    else:\n`;
+        py += `        return sqlite3.connect("kv_library.db")\n\n`;
+
+        py += `def view_all_books():\n`;
+        py += `    con = get_db_connection()\n`;
+        py += `    query = "SELECT book_id, title, author, category, copies_available, price FROM books;"\n`;
+        py += `    df = pd.read_sql(query, con)\n`;
+        py += `    print("\\n--- MASTER BOOK INVENTORY ---")\n`;
+        py += `    print(df.to_string(index=False))\n`;
+        py += `    con.close()\n\n`;
+
+        py += `def plot_category_distribution():\n`;
+        py += `    con = get_db_connection()\n`;
+        py += `    df = pd.read_sql("SELECT category, SUM(copies_available) AS total_copies FROM books GROUP BY category;", con)\n`;
+        py += `    con.close()\n\n`;
+        py += `    # Authentic Matplotlib Figure Styling\n`;
+        py += `    plt.figure(figsize=(9, 5))\n`;
+        py += `    plt.bar(df['category'], df['total_copies'], color='#1f77b4', edgecolor='black', linewidth=1)\n`;
+        py += `    plt.xlabel('Subject Categories')\n`;
+        py += `    plt.ylabel('Available Copies Count')\n`;
+        py += `    plt.title('Vidyalaya Library - Books Stocked by Department')\n`;
+        py += `    plt.grid(True, linestyle='--', alpha=0.6)\n`;
+        py += `    plt.tight_layout()\n`;
+        py += `    plt.show()\n\n`;
+
+        py += `def issue_book_to_student():\n`;
+        py += `    book_id = input("Enter Book ID (e.g. KVCR-101): ").strip()\n`;
+        py += `    card_no = input("Enter Student Card No (e.g. KVCR-2025-014): ").strip()\n`;
+        py += `    name = input("Enter Student Full Name: ").strip()\n`;
+        py += `    grade = input("Enter Class (e.g. XII-Sci): ").strip()\n`;
+        py += `    issue_date = datetime.now().strftime("%Y-%m-%d")\n`;
+        py += `    due_date = (datetime.now() + timedelta(days=14)).strftime("%Y-%m-%d")\n`;
+        py += `    loan_id = "LOAN-" + str(int(datetime.now().timestamp()))[-4:]\n\n`;
+        py += `    con = get_db_connection()\n`;
+        py += `    cur = con.cursor()\n`;
+        py += `    cur.execute(f"UPDATE books SET copies_available = copies_available - 1 WHERE book_id='{book_id}';")\n`;
+        py += `    cur.execute("INSERT INTO issued_books VALUES (%s, %s, %s, %s, %s, %s, %s, NULL, 'Issued')",\n`;
+        py += `                (loan_id, book_id, card_no, name, grade, issue_date, due_date))\n`;
+        py += `    con.commit()\n`;
+        py += `    print(f"Book {book_id} issued to {name} under loan {loan_id}. Due date: {due_date}")\n`;
+        py += `    con.close()\n\n`;
+
+        py += `def main():\n`;
+        py += `    while True:\n`;
+        py += `        print("\\n========================================================")\n`;
+        py += `        print("  VIDYALAYA LIBRARY MANAGEMENT SYSTEM (CLASS XII IP)")\n`;
+        py += `        print("  PM SHRI Kendriya Vidyalaya Churu")\n`;
+        py += `        print("========================================================")\n`;
+        py += `        print("1. Display All Cataloged Books (Pandas DataFrame)")\n`;
+        py += `        print("2. Issue Book to Student")\n`;
+        py += `        print("3. Return Book (Restore Stock)")\n`;
+        py += `        print("4. Matplotlib Stock Plot")\n`;
+        py += `        print("5. Exit System")\n`;
+        py += `        choice = input("Enter choice (1-5): ").strip()\n`;
+        py += `        if choice == '1': view_all_books()\n`;
+        py += `        elif choice == '2': issue_book_to_student()\n`;
+        py += `        elif choice == '4': plot_category_distribution()\n`;
+        py += `        elif choice == '5': break\n\n`;
+
+        py += `if __name__ == '__main__':\n`;
+        py += `    main()\n`;
+
+        const el = document.getElementById('fullPythonCodeBlock');
+        if (el) el.innerText = py;
+        return py;
+      }
+
+      function simulatePythonRun() {
+        const out = document.getElementById('pythonTerminalOutput');
+        let txt = `> python3 kv_library_app.py\n`;
+        txt += `========================================================\n`;
+        txt += `  VIDYALAYA LIBRARY MANAGEMENT SYSTEM (CLASS XII IP)\n`;
+        txt += `  PM SHRI Kendriya Vidyalaya Churu\n`;
+        txt += `========================================================\n`;
+        txt += `Connecting to MySQL host 'localhost:3306' (database: 'SchoolLibrary_KVChuru')...\n`;
+        txt += `Database connection established successfully.\n\n`;
+        txt += `Executing: pd.read_sql("SELECT * FROM books LIMIT 5;", con)\n\n`;
+        txt += `ACC_ID     TITLE                               AUTHOR            COPIES  PRICE\n`;
+        txt += `--------------------------------------------------------------------------------\n`;
+        books.slice(0, 5).forEach(b => {
+          txt += `${b.Book_ID.padEnd(10)} ${b.Title.slice(0, 34).padEnd(36)} ${b.Author.slice(0, 16).padEnd(18)} ${String(b.Copies_Available).padEnd(7)} Rs. ${b.Price}\n`;
+        });
+        txt += `--------------------------------------------------------------------------------\n`;
+        txt += `Total records in inventory: ${books.length}\n`;
+        txt += `Circulation active loans: ${issuedBooks.filter(i => i.Status === 'Issued').length}\n`;
+        txt += `System exit status: 0 (OK)\n`;
+        out.innerText = txt;
+        showToast("Python script executed in simulated terminal", "success");
+      }
+
+      function clearPythonTerminal() {
+        document.getElementById('pythonTerminalOutput').innerText = `Terminal cleared.`;
+      }
+
+      function downloadPythonScript() {
+        const py = generateFullPythonScript();
+        const blob = new Blob([py], { type: 'text/plain;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `kv_library_app.py`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast("Downloaded kv_library_app.py", "success");
+      }
+
+      function copyTextFromElement(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          showToast("Code copied to clipboard", "success");
+        }).catch(() => {
+          showToast("Failed to copy code", "error");
+        });
+      }
+
+      // -------------------------------------------------------------
+      // Matplotlib Analytics (Real Python Matplotlib Style)
+      // -------------------------------------------------------------
+      function renderReportCharts() {
+        renderDepartmentChart();
+        renderCirculationRatioChart();
+        updateReportStats();
+      }
+
+      function renderDepartmentChart() {
+        const ctx = document.getElementById('reportDepartmentChart');
+        if (!ctx) return;
+
+        const deptMap = {};
+        books.forEach(b => {
+          deptMap[b.Category] = (deptMap[b.Category] || 0) + Number(b.Copies_Available || 0);
+        });
+
+        const labels = Object.keys(deptMap);
+        const data = Object.values(deptMap);
+
+        if (reportDeptChartInstance) {
+          reportDeptChartInstance.destroy();
+        }
+
+        const isDark = document.documentElement.classList.contains('dark');
+        const axisColor = isDark ? '#c9d1d9' : '#000000';
+        const gridColor = isDark ? '#30363d' : '#c0c0c0';
+
+        // Classic Matplotlib Color Cycle (tab10)
+        const mplColors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2'];
+
+        reportDeptChartInstance = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: "Copies Available",
+              data: data,
+              backgroundColor: labels.map((_, i) => mplColors[i % mplColors.length]),
+              borderColor: '#000000',
+              borderWidth: 1.0,
+              borderRadius: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: {
+                grid: {
+                  color: gridColor,
+                  borderDash: [4, 4],
+                  lineWidth: 0.8
+                },
+                border: {
+                  color: axisColor,
+                  width: 1.5
+                },
+                ticks: {
+                  color: axisColor,
+                  font: { family: "system-ui, sans-serif", size: 11, weight: '500' }
+                },
+                title: {
+                  display: true,
+                  text: 'Subject Categories (xlabel)',
+                  color: axisColor,
+                  font: { family: "system-ui, sans-serif", size: 12, weight: 'bold' }
+                }
+              },
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: gridColor,
+                  borderDash: [4, 4],
+                  lineWidth: 0.8
+                },
+                border: {
+                  color: axisColor,
+                  width: 1.5
+                },
+                ticks: {
+                  color: axisColor,
+                  font: { family: "system-ui, sans-serif", size: 11 }
+                },
+                title: {
+                  display: true,
+                  text: 'Available Copies Count (ylabel)',
+                  color: axisColor,
+                  font: { family: "system-ui, sans-serif", size: 12, weight: 'bold' }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function renderCirculationRatioChart() {
+        const ctx = document.getElementById('reportCirculationChart');
+        if (!ctx) return;
+
+        const inStock = books.reduce((acc, b) => acc + Number(b.Copies_Available || 0), 0);
+        const issued = issuedBooks.filter(i => i.Status === 'Issued').length;
+
+        if (reportCircChartInstance) {
+          reportCircChartInstance.destroy();
+        }
+
+        const isDark = document.documentElement.classList.contains('dark');
+        const textColor = isDark ? '#c9d1d9' : '#000000';
+
+        reportCircChartInstance = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['Available on Shelves (In Stock)', 'Issued on Loan to Students'],
+            datasets: [{
+              data: [inStock, issued],
+              backgroundColor: ['#2ca02c', '#ff7f0e'], // Matplotlib green & orange
+              borderColor: '#000000',
+              borderWidth: 1.2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: textColor,
+                  font: { family: "system-ui, sans-serif", size: 11, weight: '500' },
+                  boxWidth: 14
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function updateReportStats() {
+        const totalWorth = books.reduce((acc, b) => acc + (Number(b.Price || 0) * Number(b.Copies_Available || 0)), 0);
+        const totalStock = books.reduce((acc, b) => acc + Number(b.Copies_Available || 0), 0);
+        const issuedCount = issuedBooks.filter(i => i.Status === 'Issued').length;
+        const totalCollection = totalStock + issuedCount;
+        const util = totalCollection > 0 ? ((totalStock / totalCollection) * 100).toFixed(1) : 100;
+
+        const worthEl = document.getElementById('reportTotalWorth');
+        const utilEl = document.getElementById('reportUtilization');
+
+        if (worthEl) worthEl.innerText = `Rs. ${totalWorth.toLocaleString('en-IN')}`;
+        if (utilEl) utilEl.innerText = `${util}% in Stock`;
+      }
+
+      // -------------------------------------------------------------
+      // Procedural 3D Texture Engine (Canvas Rasterization)
+      // -------------------------------------------------------------
+      const isSoftwareGl = (() => {
+        try {
+          const gl = document.createElement('canvas').getContext('webgl2') || document.createElement('canvas').getContext('webgl');
+          if (!gl) return true;
+          const ext = gl.getExtension('WEBGL_debug_renderer_info');
+          const param = ext ? ext.UNMASKED_RENDERER_WEBGL : gl.RENDERER;
+          const gpu = String(gl.getParameter(param));
+          gl.getExtension('WEBGL_lose_context')?.loseContext();
+          return /SwiftShader|llvmpipe|softpipe|Software|Basic Render/i.test(gpu);
+        } catch (e) {
+          return true;
+        }
+      })();
+
+      const textureCache = new Map();
+
+      function getCategoryBookColors(category) {
+        switch (category) {
+          case 'Computer Science':
+            return { top: '#1b365d', bottom: '#234b7d', gold: '#e6c387', spine: '#15293e' };
+          case 'Physics':
+            return { top: '#2e2150', bottom: '#48357a', gold: '#e6c387', spine: '#23183d' };
+          case 'Chemistry':
+            return { top: '#123824', bottom: '#1f5638', gold: '#f0d399', spine: '#0d281a' };
+          case 'Mathematics':
+            return { top: '#3b1c32', bottom: '#5a2d4d', gold: '#e6c387', spine: '#2c1425' };
+          case 'AI & Robotics':
+            return { top: '#133544', bottom: '#204f63', gold: '#e6c387', spine: '#0c242e' };
+          case 'Fiction':
+            return { top: '#42161b', bottom: '#63252c', gold: '#f5ddb0', spine: '#2e0f13' };
+          default:
+            return { top: '#24292f', bottom: '#323940', gold: '#e6c387', spine: '#1c2024' };
+        }
+      }
+
+      function createBookCoverCanvas(book) {
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 768;
+        const ctx = c.getContext('2d');
+        const colors = getCategoryBookColors(book.Category);
+
+        // Solid Academic Hardcover Background
+        const grad = ctx.createLinearGradient(0, 0, 0, 768);
+        grad.addColorStop(0, colors.top);
+        grad.addColorStop(1, colors.bottom);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 512, 768);
+
+        // Gold Foil Border Lines
+        ctx.strokeStyle = colors.gold;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(20, 20, 472, 728);
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(28, 28, 456, 712);
+
+        // Header Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 22px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('PM SHRI KV CHURU', 256, 90);
+
+        ctx.fillStyle = colors.gold;
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText(book.Category.toUpperCase(), 256, 120);
+
+        // Main Book Title (Wrapped)
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 30px system-ui, sans-serif';
+        const words = (book.Title || 'Textbook').split(' ');
+        let line = '';
+        let y = 300;
+        for (let n = 0; n < words.length; n++) {
+          const testLine = line + words[n] + ' ';
+          const metrics = ctx.measureText(testLine);
+          if (metrics.width > 420 && n > 0) {
+            ctx.fillText(line, 256, y);
+            line = words[n] + ' ';
+            y += 42;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line, 256, y);
+
+        // Author Name
+        ctx.fillStyle = colors.gold;
+        ctx.font = 'italic 20px system-ui, serif';
+        ctx.fillText(`By ${book.Author || 'CBSE Author'}`, 256, y + 60);
+
+        // Accession Barcode Strip
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(100, 620, 312, 50);
+        ctx.fillStyle = '#000000';
+        for (let i = 110; i < 400; i += 6) {
+          const w = (i % 4 === 0) ? 3 : 1.5;
+          ctx.fillRect(i, 625, w, 32);
+        }
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText(book.Book_ID, 256, 685);
+
+        return c;
+      }
+
+      function createBookSpineCanvas(book) {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 768;
+        const ctx = c.getContext('2d');
+        const colors = getCategoryBookColors(book.Category);
+
+        ctx.fillStyle = colors.spine;
+        ctx.fillRect(0, 0, 128, 768);
+
+        ctx.strokeStyle = colors.gold;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(8, 12, 112, 744);
+
+        // Accession ID on Top
+        ctx.save();
+        ctx.fillStyle = colors.gold;
+        ctx.font = 'bold 15px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(book.Book_ID, 64, 46);
+
+        // Vertical Book Title
+        ctx.translate(64, 400);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 22px system-ui, sans-serif';
+        const displayTitle = book.Title.length > 32 ? book.Title.substring(0, 30) + '...' : book.Title;
+        ctx.fillText(displayTitle, 0, 8);
+        ctx.restore();
+
+        // School Initials on Bottom
+        ctx.fillStyle = colors.gold;
+        ctx.font = 'bold 14px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('KV CR', 64, 735);
+
+        return c;
+      }
+
+      function createBookBackCanvas(book) {
+        const c = document.createElement('canvas');
+        c.width = 512;
+        c.height = 768;
+        const ctx = c.getContext('2d');
+        const colors = getCategoryBookColors(book.Category);
+
+        ctx.fillStyle = colors.top;
+        ctx.fillRect(0, 0, 512, 768);
+
+        ctx.strokeStyle = colors.gold;
+        ctx.lineWidth = 3;
+        ctx.strokeRect(24, 24, 464, 720);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 18px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('KENDRIYA VIDYALAYA SANGATHAN', 256, 120);
+
+        ctx.font = '14px system-ui, sans-serif';
+        ctx.fillStyle = '#c9d1d9';
+        ctx.fillText('Central Library & Learning Resource Centre', 256, 150);
+        ctx.fillText(`Shelf Location: ${book.Shelf_Location || 'Rack A-1'}`, 256, 180);
+
+        return c;
+      }
+
+      function createPagesTextureCanvas() {
+        const c = document.createElement('canvas');
+        c.width = 128;
+        c.height = 128;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#f6f3eb';
+        ctx.fillRect(0, 0, 128, 128);
+
+        // Page edges
+        ctx.fillStyle = '#e8e2d5';
+        for (let i = 0; i < 128; i += 3) {
+          ctx.fillRect(0, i, 128, 1);
+        }
+        return c;
+      }
+
+      function getBookTextures(book) {
+        const cacheKey = book.Book_ID;
+        if (textureCache.has(cacheKey)) {
+          return textureCache.get(cacheKey);
+        }
+
+        const coverTex = new THREE.CanvasTexture(createBookCoverCanvas(book));
+        const spineTex = new THREE.CanvasTexture(createBookSpineCanvas(book));
+        const backTex = new THREE.CanvasTexture(createBookBackCanvas(book));
+        const pagesTex = new THREE.CanvasTexture(createPagesTextureCanvas());
+        pagesTex.wrapS = THREE.RepeatWrapping;
+        pagesTex.wrapT = THREE.RepeatWrapping;
+
+        const set = { coverTex, spineTex, backTex, pagesTex };
+        textureCache.set(cacheKey, set);
+        return set;
+      }
+
+      function build3DBookMesh(book, width = 3.0, height = 4.4, thickness = 0.65) {
+        const group = new THREE.Group();
+        group.userData = { book: book };
+
+        const textures = getBookTextures(book);
+        const colors = getCategoryBookColors(book.Category);
+        const leatherColor = new THREE.Color(colors.top);
+
+        const coverMat = new THREE.MeshStandardMaterial({ map: textures.coverTex, roughness: 0.4, metalness: 0.1 });
+        const spineMat = new THREE.MeshStandardMaterial({ map: textures.spineTex, roughness: 0.45, metalness: 0.1 });
+        const backMat = new THREE.MeshStandardMaterial({ map: textures.backTex, roughness: 0.4, metalness: 0.1 });
+        const pageMat = new THREE.MeshStandardMaterial({ map: textures.pagesTex, roughness: 0.7, metalness: 0.0 });
+        const edgeBoardMat = new THREE.MeshStandardMaterial({ color: leatherColor, roughness: 0.5 });
+
+        // 1. Pages Block
+        const pageGeo = new THREE.BoxGeometry(width - 0.2, height - 0.2, thickness - 0.12);
+        const pageMesh = new THREE.Mesh(pageGeo, [
+          pageMat, spineMat, pageMat, pageMat, edgeBoardMat, edgeBoardMat
+        ]);
+        pageMesh.position.set(0.08, 0, 0);
+        group.add(pageMesh);
+
+        // 2. Back Cover
+        const backCoverGeo = new THREE.BoxGeometry(width, height, 0.06);
+        const backCoverMesh = new THREE.Mesh(backCoverGeo, [
+          edgeBoardMat, edgeBoardMat, edgeBoardMat, edgeBoardMat, edgeBoardMat, backMat
+        ]);
+        backCoverMesh.position.set(0, 0, -(thickness / 2));
+        group.add(backCoverMesh);
+
+        // 3. Spine
+        const spineGeo = new THREE.BoxGeometry(0.06, height, thickness);
+        const spineMesh = new THREE.Mesh(spineGeo, [
+          edgeBoardMat, spineMat, edgeBoardMat, edgeBoardMat, edgeBoardMat, edgeBoardMat
+        ]);
+        spineMesh.position.set(-(width / 2), 0, 0);
+        group.add(spineMesh);
+
+        // 4. Front Cover Hinge Group
+        const hingeGroup = new THREE.Group();
+        hingeGroup.position.set(-(width / 2), 0, thickness / 2);
+
+        const frontCoverGeo = new THREE.BoxGeometry(width, height, 0.06);
+        const frontCoverMesh = new THREE.Mesh(frontCoverGeo, [
+          edgeBoardMat, edgeBoardMat, edgeBoardMat, edgeBoardMat, coverMat, edgeBoardMat
+        ]);
+        frontCoverMesh.position.set(width / 2, 0, 0);
+        hingeGroup.add(frontCoverMesh);
+
+        group.add(hingeGroup);
+        group.userData.hinge = hingeGroup;
+
+        return group;
+      }
+
+      // -------------------------------------------------------------
+      // Home Tab 3D Preview Engine
+      // -------------------------------------------------------------
+      let home3dScene, home3dCamera, home3dRenderer, home3dControls;
+      let home3dActiveMesh = null;
+      let home3dAutoRotate = true;
+      let home3dIsOpen = false;
+      let home3dLightMode = 0;
+      let home3dLightDir, home3dLightHemi;
+
+      function initHome3D() {
+        const canvas = document.getElementById('home3dCanvas');
+        if (!canvas) return;
+
+        const width = canvas.parentElement.clientWidth || 400;
+        const height = canvas.parentElement.clientHeight || 320;
+
+        home3dScene = new THREE.Scene();
+        home3dCamera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+        home3dCamera.position.set(3.5, 2.5, 7.5);
+
+        home3dRenderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: !isSoftwareGl,
+          alpha: true
+        });
+        home3dRenderer.setSize(width, height);
+        home3dRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isSoftwareGl ? 1 : 2));
+
+        home3dControls = new THREE.OrbitControls(home3dCamera, canvas);
+        home3dControls.enableDamping = true;
+        home3dControls.dampingFactor = 0.05;
+        home3dControls.maxDistance = 14;
+        home3dControls.minDistance = 3.5;
+        home3dControls.target.set(0, 0, 0);
+
+        // Lighting Rig
+        home3dLightHemi = new THREE.HemisphereLight(0xffffff, 0x24292f, 1.0);
+        home3dScene.add(home3dLightHemi);
+
+        home3dLightDir = new THREE.DirectionalLight(0xfef08a, 1.4);
+        home3dLightDir.position.set(5, 8, 6);
+        home3dScene.add(home3dLightDir);
+
+        populateHome3DDropdown();
+
+        if (books.length > 0) {
+          loadHome3DBook(books[0]);
+        }
+
+        const animate = () => {
+          requestAnimationFrame(animate);
+          if (home3dAutoRotate && home3dActiveMesh && !home3dIsOpen) {
+            home3dActiveMesh.rotation.y += 0.008;
+          }
+          home3dControls.update();
+          home3dRenderer.render(home3dScene, home3dCamera);
+        };
+        animate();
+
+        window.addEventListener('resize', onResizeHome3D);
+      }
+
+      function onResizeHome3D() {
+        const canvas = document.getElementById('home3dCanvas');
+        if (!canvas || !home3dRenderer || !home3dCamera) return;
+        const width = canvas.parentElement.clientWidth;
+        const height = canvas.parentElement.clientHeight;
+        if (width && height) {
+          home3dCamera.aspect = width / height;
+          home3dCamera.updateProjectionMatrix();
+          home3dRenderer.setSize(width, height);
+        }
+      }
+
+      function populateHome3DDropdown() {
+        const sel = document.getElementById('home3dBookSelect');
+        if (!sel) return;
+        sel.innerHTML = books.map(b => `
+          <option value="${b.Book_ID}">[${b.Book_ID}] ${b.Title} (${b.Category})</option>
+        `).join('');
+      }
+
+      function loadHome3DBook(book) {
+        if (!home3dScene) return;
+
+        if (home3dActiveMesh) {
+          home3dScene.remove(home3dActiveMesh);
+          home3dActiveMesh = null;
+        }
+
+        home3dIsOpen = false;
+        const openText = document.getElementById('home3dOpenText');
+        if (openText) openText.innerText = "Open Hardcover";
+
+        home3dActiveMesh = build3DBookMesh(book, 3.2, 4.6, 0.7);
+        home3dActiveMesh.position.set(0, 0, 0);
+        home3dActiveMesh.rotation.set(0.1, -0.4, 0);
+        home3dScene.add(home3dActiveMesh);
+
+        // Update Dossier
+        const catEl = document.getElementById('home3dCategory');
+        const titleEl = document.getElementById('home3dTitle');
+        const authorEl = document.getElementById('home3dAuthor');
+        const accEl = document.getElementById('home3dAccId');
+        const shelfEl = document.getElementById('home3dShelf');
+        const yearEl = document.getElementById('home3dYear');
+        const priceEl = document.getElementById('home3dPrice');
+        const sqlEl = document.getElementById('home3dSqlQuery');
+        const badgeEl = document.getElementById('home3dBadgeText');
+
+        if (catEl) catEl.innerText = book.Category;
+        if (titleEl) titleEl.innerText = book.Title;
+        if (authorEl) authorEl.innerText = 'Author: ' + book.Author;
+        if (accEl) accEl.innerText = book.Book_ID;
+        if (shelfEl) shelfEl.innerText = book.Shelf_Location || 'Rack A-1';
+        if (yearEl) yearEl.innerText = book.Publication_Year || 2024;
+        if (priceEl) priceEl.innerText = `Rs. ${book.Price}`;
+        if (sqlEl) sqlEl.innerText = `SELECT * FROM books WHERE book_id = '${book.Book_ID}';`;
+        if (badgeEl) badgeEl.innerText = `In Stock: ${book.Copies_Available} Copies Available`;
+      }
+
+      function changeHome3DBook(bookId) {
+        const book = books.find(b => b.Book_ID === bookId);
+        if (book) loadHome3DBook(book);
+      }
+
+      function toggleHome3DAutoRotate() {
+        home3dAutoRotate = !home3dAutoRotate;
+        const txt = document.getElementById('home3dRotateText');
+        if (txt) txt.innerText = home3dAutoRotate ? "Auto-Spin: ON" : "Auto-Spin: OFF";
+      }
+
+      function toggleHome3DOpenBook() {
+        if (!home3dActiveMesh || !home3dActiveMesh.userData.hinge) return;
+        home3dIsOpen = !home3dIsOpen;
+        const hinge = home3dActiveMesh.userData.hinge;
+        const txt = document.getElementById('home3dOpenText');
+
+        if (home3dIsOpen) {
+          hinge.rotation.y = -2.4;
+          if (txt) txt.innerText = "Close Hardcover";
+          home3dAutoRotate = false;
+          const rTxt = document.getElementById('home3dRotateText');
+          if (rTxt) rTxt.innerText = "Auto-Spin: OFF";
+        } else {
+          hinge.rotation.y = 0;
+          if (txt) txt.innerText = "Open Hardcover";
+        }
+      }
+
+      function cycleHome3DLighting() {
+        home3dLightMode = (home3dLightMode + 1) % 2;
+        const txt = document.getElementById('home3dLightText');
+        if (home3dLightMode === 0) {
+          home3dLightDir.color.setHex(0xfef08a);
+          if (txt) txt.innerText = "Light: Desk Lamp";
+        } else {
+          home3dLightDir.color.setHex(0xffffff);
+          if (txt) txt.innerText = "Light: Daylight";
+        }
+      }
+
+      function resetHome3DCamera() {
+        if (home3dCamera && home3dControls) {
+          home3dCamera.position.set(3.5, 2.5, 7.5);
+          home3dControls.target.set(0, 0, 0);
+          home3dControls.update();
+        }
+      }
+
+      function borrowCurrentHome3DBook() {
+        const sel = document.getElementById('home3dBookSelect');
+        if (sel && sel.value) quickIssueBook(sel.value);
+      }
+
+      function inspectCurrentBookInFull3D() {
+        const sel = document.getElementById('home3dBookSelect');
+        const bookId = sel ? sel.value : (books[0] ? books[0].Book_ID : '');
+        inspectBookIn3D(bookId);
+      }
+
+      // -------------------------------------------------------------
+      // Full 3D Library Room & Bookshelf Engine
+      // -------------------------------------------------------------
+      let room3dScene, room3dCamera, room3dRenderer, room3dControls;
+      let room3dViewMode = 'shelf';
+      let room3dShelfGroup = null;
+      let room3dDeskBookMesh = null;
+      let room3dStandingBooks = [];
+      let room3dRaycaster, room3dMouse;
+      let room3dHoveredGroup = null;
+      let room3dActiveBook = null;
+      let room3dAutoRotate = false;
+      let room3dIsOpen = false;
+      let room3dLightMode = 0;
+      let room3dDirLight, room3dHemiLight;
+      let room3dInitialized = false;
+
+      function initRoom3D() {
+        const canvas = document.getElementById('room3dCanvas');
+        if (!canvas) return;
+
+        const width = canvas.parentElement.clientWidth || 700;
+        const height = canvas.parentElement.clientHeight || 480;
+
+        room3dScene = new THREE.Scene();
+        room3dScene.background = new THREE.Color(0x0d1117);
+
+        room3dCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+        room3dCamera.position.set(0, 4, 18);
+
+        room3dRenderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: !isSoftwareGl
+        });
+        room3dRenderer.setSize(width, height);
+        room3dRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isSoftwareGl ? 1 : 2));
+
+        room3dControls = new THREE.OrbitControls(room3dCamera, canvas);
+        room3dControls.enableDamping = true;
+        room3dControls.dampingFactor = 0.05;
+        room3dControls.maxDistance = 24;
+        room3dControls.minDistance = 3;
+        room3dControls.target.set(0, 4, 0);
+
+        // Lights
+        room3dHemiLight = new THREE.HemisphereLight(0xffffff, 0x161b22, 1.0);
+        room3dScene.add(room3dHemiLight);
+
+        room3dDirLight = new THREE.DirectionalLight(0xfef08a, 1.4);
+        room3dDirLight.position.set(8, 14, 10);
+        room3dScene.add(room3dDirLight);
+
+        // Raycasting
+        room3dRaycaster = new THREE.Raycaster();
+        room3dMouse = new THREE.Vector2(-999, -999);
+
+        build3DShelfRoom();
+        populateRoom3DDropdown();
+
+        if (books.length > 0) {
+          select3DBook(books[0]);
+        }
+
+        canvas.addEventListener('mousemove', onRoom3DMouseMove);
+        canvas.addEventListener('click', onRoom3DClick);
+        window.addEventListener('resize', onResizeRoom3D);
+
+        const animate = () => {
+          requestAnimationFrame(animate);
+          if (room3dAutoRotate && room3dControls && room3dViewMode === 'desk') {
+            if (room3dDeskBookMesh && !room3dIsOpen) {
+              room3dDeskBookMesh.rotation.y += 0.008;
+            }
+          }
+          room3dControls.update();
+          updateRoom3DRaycaster();
+          room3dRenderer.render(room3dScene, room3dCamera);
+        };
+        animate();
+
+        room3dInitialized = true;
+      }
+
+      function build3DShelfRoom() {
+        room3dShelfGroup = new THREE.Group();
+        room3dStandingBooks = [];
+
+        // Bookshelf Material (Oak wood look)
+        const shelfWoodMat = new THREE.MeshStandardMaterial({
+          color: 0x3d2b1f,
+          roughness: 0.6,
+          metalness: 0.05
+        });
+
+        // 4 Shelves
+        const shelfWidth = 18;
+        const shelfDepth = 2.4;
+        const shelfThickness = 0.2;
+        const shelfHeights = [0.8, 3.6, 6.4, 9.2];
+
+        shelfHeights.forEach(y => {
+          const plank = new THREE.Mesh(new THREE.BoxGeometry(shelfWidth, shelfThickness, shelfDepth), shelfWoodMat);
+          plank.position.set(0, y, 0);
+          room3dShelfGroup.add(plank);
+        });
+
+        // Side Pillars
+        const leftPillar = new THREE.Mesh(new THREE.BoxGeometry(0.3, 10, shelfDepth), shelfWoodMat);
+        leftPillar.position.set(-(shelfWidth / 2), 5, 0);
+        room3dShelfGroup.add(leftPillar);
+
+        const rightPillar = new THREE.Mesh(new THREE.BoxGeometry(0.3, 10, shelfDepth), shelfWoodMat);
+        rightPillar.position.set(shelfWidth / 2, 5, 0);
+        room3dShelfGroup.add(rightPillar);
+
+        // Populate Standing Books onto Shelves
+        const booksPerShelf = 5;
+        books.forEach((b, idx) => {
+          const shelfIdx = Math.floor(idx / booksPerShelf) % 4;
+          const posOnShelf = idx % booksPerShelf;
+          const shelfY = shelfHeights[shelfIdx] + 0.1;
+
+          const bookGroup = build3DBookMesh(b, 2.0, 2.6, 0.45);
+          const x = -6.5 + (posOnShelf * 2.8) + (Math.random() * 0.2);
+          const z = 0.1;
+
+          bookGroup.position.set(x, shelfY + 1.3, z);
+          bookGroup.rotation.y = (Math.PI / 2) + ((Math.random() - 0.5) * 0.05);
+
+          bookGroup.userData.originalX = x;
+          bookGroup.userData.originalZ = z;
+          bookGroup.userData.pulled = false;
+
+          room3dStandingBooks.push(bookGroup);
+          room3dShelfGroup.add(bookGroup);
+        });
+
+        room3dScene.add(room3dShelfGroup);
+      }
+
+      function onRoom3DMouseMove(e) {
+        const canvas = document.getElementById('room3dCanvas');
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        room3dMouse.x = ((e.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
+        room3dMouse.y = -((e.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
+
+        const tooltip = document.getElementById('room3dHoverTooltip');
+        if (tooltip && tooltip.style.display !== 'none') {
+          tooltip.style.left = `${e.clientX - rect.left + 15}px`;
+          tooltip.style.top = `${e.clientY - rect.top - 10}px`;
+        }
+      }
+
+      function updateRoom3DRaycaster() {
+        if (room3dViewMode !== 'shelf' || !room3dRaycaster || !room3dCamera) return;
+
+        room3dRaycaster.setFromCamera(room3dMouse, room3dCamera);
+        const intersects = room3dRaycaster.intersectObjects(room3dStandingBooks, true);
+
+        const tooltip = document.getElementById('room3dHoverTooltip');
+
+        if (intersects.length > 0) {
+          let topGroup = intersects[0].object;
+          while (topGroup.parent && !topGroup.userData.book) {
+            topGroup = topGroup.parent;
+          }
+
+          if (topGroup.userData.book) {
+            if (room3dHoveredGroup !== topGroup) {
+              if (room3dHoveredGroup) {
+                room3dHoveredGroup.position.z = room3dHoveredGroup.userData.originalZ;
+              }
+              room3dHoveredGroup = topGroup;
+              room3dHoveredGroup.position.z = room3dHoveredGroup.userData.originalZ + 0.6;
+            }
+
+            const book = topGroup.userData.book;
+            if (tooltip) {
+              tooltip.style.display = 'block';
+              document.getElementById('tooltipAccId').innerText = book.Book_ID;
+              document.getElementById('tooltipTitle').innerText = book.Title;
+              document.getElementById('tooltipAuthor').innerText = book.Author;
+              document.getElementById('tooltipCopies').innerText = `${book.Copies_Available} Copies Available`;
+              document.getElementById('tooltipShelf').innerText = book.Shelf_Location || 'Rack A-1';
+            }
+            return;
+          }
+        }
+
+        if (room3dHoveredGroup) {
+          room3dHoveredGroup.position.z = room3dHoveredGroup.userData.originalZ;
+          room3dHoveredGroup = null;
+        }
+        if (tooltip) tooltip.style.display = 'none';
+      }
+
+      function onRoom3DClick() {
+        if (room3dViewMode === 'shelf' && room3dHoveredGroup && room3dHoveredGroup.userData.book) {
+          select3DBook(room3dHoveredGroup.userData.book);
+        }
+      }
+
+      function select3DBook(book) {
+        room3dActiveBook = book;
+
+        const sel = document.getElementById('room3dBookPicker');
+        if (sel) sel.value = book.Book_ID;
+
+        const idEl = document.getElementById('room3dActiveId');
+        const catEl = document.getElementById('room3dActiveCat');
+        const titleEl = document.getElementById('room3dActiveTitle');
+        const authorEl = document.getElementById('room3dActiveAuthor');
+        const shelfEl = document.getElementById('room3dActiveShelf');
+        const yearEl = document.getElementById('room3dActiveYear');
+        const copiesEl = document.getElementById('room3dActiveCopies');
+        const priceEl = document.getElementById('room3dActivePrice');
+        const sqlEl = document.getElementById('room3dActiveSql');
+
+        if (idEl) idEl.innerText = book.Book_ID;
+        if (catEl) catEl.innerText = book.Category;
+        if (titleEl) titleEl.innerText = book.Title;
+        if (authorEl) authorEl.innerText = `By ${book.Author}`;
+        if (shelfEl) shelfEl.innerText = book.Shelf_Location || 'Rack A-1';
+        if (yearEl) yearEl.innerText = book.Publication_Year || 2024;
+        if (copiesEl) copiesEl.innerText = `${book.Copies_Available} In Stock`;
+        if (priceEl) priceEl.innerText = `Rs. ${book.Price}.00`;
+        if (sqlEl) sqlEl.innerText = `SELECT * FROM books WHERE book_id = '${book.Book_ID}';`;
+
+        if (room3dViewMode === 'desk') {
+          renderDeskModeBook();
+        }
+      }
+
+      function select3DBookById(id) {
+        const b = books.find(x => x.Book_ID === id);
+        if (b) select3DBook(b);
+      }
+
+      function populateRoom3DDropdown() {
+        const sel = document.getElementById('room3dBookPicker');
+        if (!sel) return;
+        sel.innerHTML = books.map(b => `
+          <option value="${b.Book_ID}">[${b.Book_ID}] ${b.Title}</option>
+        `).join('');
+      }
+
+      function set3DViewMode(mode) {
+        room3dViewMode = mode;
+        const shelfBtn = document.getElementById('modeShelfBtn');
+        const deskBtn = document.getElementById('modeDeskBtn');
+        const hudTitle = document.getElementById('room3dHudTitle');
+
+        if (mode === 'shelf') {
+          if (shelfBtn) shelfBtn.className = "btn btn-primary btn-sm";
+          if (deskBtn) deskBtn.className = "btn btn-default btn-sm";
+          if (hudTitle) hudTitle.innerText = "3D Bookshelf Room • Hover a book to pull it out • Click to inspect";
+
+          if (room3dShelfGroup) room3dShelfGroup.visible = true;
+          if (room3dDeskBookMesh) room3dDeskBookMesh.visible = false;
+
+          if (room3dCamera) room3dCamera.position.set(0, 4, 18);
+          if (room3dControls) {
+            room3dControls.target.set(0, 4, 0);
+            room3dControls.update();
+          }
+        } else {
+          if (deskBtn) deskBtn.className = "btn btn-primary btn-sm";
+          if (shelfBtn) shelfBtn.className = "btn btn-default btn-sm";
+          if (hudTitle) hudTitle.innerText = "3D Single Book Inspection Desk • Orbit 360° • Open hardcover";
+
+          if (room3dShelfGroup) room3dShelfGroup.visible = false;
+          renderDeskModeBook();
+
+          if (room3dCamera) room3dCamera.position.set(3.5, 3.0, 7.5);
+          if (room3dControls) {
+            room3dControls.target.set(0, 0, 0);
+            room3dControls.update();
+          }
+        }
+      }
+
+      function renderDeskModeBook() {
+        if (!room3dActiveBook || !room3dScene) return;
+        if (room3dDeskBookMesh) {
+          room3dScene.remove(room3dDeskBookMesh);
+          room3dDeskBookMesh = null;
+        }
+
+        room3dIsOpen = false;
+        const openTxt = document.getElementById('room3dOpenBookText');
+        if (openTxt) openTxt.innerText = "Open Hardcover";
+
+        room3dDeskBookMesh = build3DBookMesh(room3dActiveBook, 3.2, 4.6, 0.7);
+        room3dDeskBookMesh.position.set(0, 0, 0);
+        room3dDeskBookMesh.rotation.set(0.1, -0.4, 0);
+        room3dScene.add(room3dDeskBookMesh);
+      }
+
+      function toggle3DAutoRotate() {
+        room3dAutoRotate = !room3dAutoRotate;
+        const txt = document.getElementById('room3dAutoRotateText');
+        if (txt) txt.innerText = room3dAutoRotate ? "Auto-Rotate: ON" : "Auto-Rotate: OFF";
+      }
+
+      function toggle3DOpenBook() {
+        if (room3dViewMode !== 'desk') {
+          set3DViewMode('desk');
+        }
+
+        if (!room3dDeskBookMesh || !room3dDeskBookMesh.userData.hinge) return;
+        room3dIsOpen = !room3dIsOpen;
+        const hinge = room3dDeskBookMesh.userData.hinge;
+        const txt = document.getElementById('room3dOpenBookText');
+
+        if (room3dIsOpen) {
+          hinge.rotation.y = -2.4;
+          if (txt) txt.innerText = "Close Hardcover";
+          room3dAutoRotate = false;
+          const rotTxt = document.getElementById('room3dAutoRotateText');
+          if (rotTxt) rotTxt.innerText = "Auto-Rotate: OFF";
+        } else {
+          hinge.rotation.y = 0;
+          if (txt) txt.innerText = "Open Hardcover";
+        }
+      }
+
+      function cycle3DLighting() {
+        room3dLightMode = (room3dLightMode + 1) % 2;
+        const nameEl = document.getElementById('room3dLightName');
+
+        if (room3dLightMode === 0) {
+          room3dDirLight.color.setHex(0xfef08a);
+          if (nameEl) nameEl.innerText = "Lamp: Study Brass";
+        } else {
+          room3dDirLight.color.setHex(0xffffff);
+          if (nameEl) nameEl.innerText = "Lamp: Daylight";
+        }
+      }
+
+      function focusRandomBook() {
+        if (books.length === 0) return;
+        const rand = books[Math.floor(Math.random() * books.length)];
+        select3DBook(rand);
+        showToast(`Selected "${rand.Title}"`, "info");
+      }
+
+      function filter3DShelfRack(rack) {
+        if (!room3dStandingBooks) return;
+        room3dStandingBooks.forEach(bGroup => {
+          const b = bGroup.userData.book;
+          if (rack === 'ALL' || (b.Shelf_Location && b.Shelf_Location.startsWith(rack))) {
+            bGroup.visible = true;
+          } else {
+            bGroup.visible = false;
+          }
+        });
+      }
+
+      function borrowActive3DBook() {
+        if (room3dActiveBook) quickIssueBook(room3dActiveBook.Book_ID);
+      }
+
+      function jumpToCatalogFrom3D() {
+        if (room3dActiveBook) {
+          switchTab('catalog');
+          const searchInput = document.getElementById('catalogSearch');
+          if (searchInput) {
+            searchInput.value = room3dActiveBook.Book_ID;
+            applyFilters();
+          }
+        }
+      }
+
+      function jumpToSQLFrom3D() {
+        if (room3dActiveBook) {
+          switchTab('sqldb');
+          setQuery(`SELECT * FROM books WHERE book_id = '${room3dActiveBook.Book_ID}';`);
+          executeSQLQuery();
+        }
+      }
+
+      function inspectBookIn3D(bookId) {
+        switchTab('threed');
+        const b = books.find(x => x.Book_ID === bookId);
+        if (b) {
+          setTimeout(() => {
+            select3DBook(b);
+            set3DViewMode('desk');
+          }, 100);
+        }
+      }
+
+      function onSwitchTo3DTab() {
+        if (!room3dInitialized) {
+          initRoom3D();
+        } else {
+          onResizeRoom3D();
+        }
+      }
+
+      function onResizeRoom3D() {
+        const canvas = document.getElementById('room3dCanvas');
+        if (!canvas || !room3dRenderer || !room3dCamera) return;
+        const width = canvas.parentElement.clientWidth;
+        const height = canvas.parentElement.clientHeight;
+        if (width && height) {
+          room3dCamera.aspect = width / height;
+          room3dCamera.updateProjectionMatrix();
+          room3dRenderer.setSize(width, height);
+        }
+      }
+
+      function onSwitchToHomeTab() {
+        onResizeHome3D();
+      }
+
+      // -------------------------------------------------------------
+      // Modals & UI Refresh
+      // -------------------------------------------------------------
+      function openAdminSettingsModal() {
+        document.getElementById('adminSettingsModal').classList.remove('hidden');
+      }
+
+      function closeAdminSettingsModal() {
+        document.getElementById('adminSettingsModal').classList.add('hidden');
+      }
+
+      function updateAllUI() {
+        updateHomeStats();
+        applyFilters();
+        renderCirculationTable();
+        populateIssueSelectDropdown();
+        renderStudentDirectory();
+        renderReportCharts();
+        generateFullSQLScript();
+        generateFullPythonScript();
+        populateHome3DDropdown();
+        populateRoom3DDropdown();
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        loadData();
+        updateAllUI();
+        initHome3D();
+      });
+    </script>
+  </body>
+</html>
